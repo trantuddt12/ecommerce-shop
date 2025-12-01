@@ -1,4 +1,0 @@
-#spring.application.name=ecommerce-shop
-spring :
-  application :
-      name : ecommerce-shop
