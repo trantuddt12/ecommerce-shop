@@ -1,0 +1,74 @@
+spring:
+  profiles:
+    active: local
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 98979766527-qb55vutdf6aptaoo0gouu64378965juu.apps.googleusercontent.com
+            client-secret: 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
+            scope:
+              - email
+              - profile
+        provider:
+          google:
+            authorization-uri: https://accounts.google.com/o/oauth2/v2/auth
+            token-uri: https://oauth2.googleapis.com/token
+            user-info-uri: https://www.googleapis.com/oauth2/v3/userinfo
+            user-name-attribute: sub
+  mail:
+    host: sandbox.smtp.mailtrap.io
+    port: 2525
+    username: 115332d29ec167
+    password: 1b053d13b15e65
+    properties : 
+      mail : 
+        smtp : 
+          auth : true
+          starttls : 
+            enable : true
+  data:
+    redis:
+      port: 6379
+      host: localhost 
+#    rest:
+#      base-path: /api
+  kafka:
+    bootstrap-servers:
+    - localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+    consumer:
+      group-id: my-default-group
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+
+logging:
+  level:
+    org :
+      springframework:
+        security: DEBUG
+            
+    
+server:
+  port: 8081
+  tomcat:
+    threads:
+      max: 500
+    accept-count: 1000
+    max-connections: 3000
+  servlet:
+    context-path: /api
+    
+
+error:
+  messagefile:
+    path: config/error-messages.xml
+
+jwt:
+  secret : MySecretKeyForJWTSignatures123456
+  expirationMs : 3600000
+  refreshExpirationMs : 2592000000
+  
