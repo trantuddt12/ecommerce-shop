@@ -12,6 +12,8 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>common</name>
     <description>common</description>
+    <packaging>pom</packaging>
+    
     <url/>
     <licenses>
         <license/>
