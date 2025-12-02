@@ -2,7 +2,6 @@ package com.ttl.base.controller;
 
 import java.util.List;
 
-import org.hibernate.annotations.Parameter;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +20,7 @@ import com.ttl.common.exception.BussinessException;
 import com.ttl.common.request.AttributeDefReq;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 
 @RestController
 @RequestMapping("/attdef")

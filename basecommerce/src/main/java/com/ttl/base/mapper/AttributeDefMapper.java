@@ -4,9 +4,9 @@ import java.util.List;
 
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
-import org.springframework.web.bind.annotation.Mapping;
 
 import com.ttl.base.entities.AttributeDef;
 import com.ttl.common.dto.AttributeDefDTO;

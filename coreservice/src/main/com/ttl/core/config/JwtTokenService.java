@@ -59,10 +59,11 @@ public class JwtTokenService implements IJwtTokenService{
     @Override
     public boolean validateToken(String token) {
     	try {
-            Jwts.parser()
-                .setSigningKey(Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8)))
-                .build()
-                .parseClaimsJws(token);
+    		Jwts.parserBuilder()
+	            .setSigningKey(Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8)))
+	            .build()
+	            .parseClaimsJws(token);
+    		
             return true;
         } catch (ExpiredJwtException ex) {
             System.out.println("❌ Token hết hạn");
@@ -83,7 +84,7 @@ public class JwtTokenService implements IJwtTokenService{
     }
     @Override
     public String extractUsername(String token) {
-        Claims claims = Jwts.parser()
+    	Claims claims = Jwts.parserBuilder()
                 .setSigningKey(Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8)))
                 .build()
                 .parseClaimsJws(token)
