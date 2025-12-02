@@ -1,14 +1,12 @@
 package com.ttl.base.config;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-
 import com.ttl.common.constant.ITag;
-
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class SwaggerConfig {
@@ -35,13 +33,13 @@ public class SwaggerConfig {
                         )
                         .addSecuritySchemes(cookieScheme,
                                 new SecurityScheme()
-                                        .name("JSESSIONID") // tên cookie thực tế
+                                        .name("JSESSIONID")
                                         .type(SecurityScheme.Type.APIKEY)
                                         .in(SecurityScheme.In.COOKIE)
                         )
                         .addSecuritySchemes(cookieScheme,
                                 new SecurityScheme()
-                                        .name(ITag.REFRESH_TOKEN) // tên cookie thực tế
+                                        .name(ITag.REFRESH_TOKEN)
                                         .type(SecurityScheme.Type.APIKEY)
                                         .in(SecurityScheme.In.COOKIE)
                         )
