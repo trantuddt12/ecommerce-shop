@@ -33,31 +33,23 @@ public class CategoryAttributeController {
 	}
 
 	@PostMapping
-	public ResponseEntity<ApiResponse<?>> create(@RequestBody CategoryAttributeReq pRequest) throws BussinessException{
-		CategoryAttributeDTO lvDefDTO = mvCategoryAttributeService.create(pRequest);
-		return ResponseEntity.ok(ApiResponse.success("CategoryAttribute is created successfully!", lvDefDTO));
+	public CategoryAttributeDTO create(@RequestBody CategoryAttributeReq pRequest) throws BussinessException {
+		return mvCategoryAttributeService.create(pRequest);
 	}
 	@GetMapping
-	public ResponseEntity<ApiResponse<?>> getAll(){
-		List<CategoryAttributeDTO> lvDefDTOs = mvCategoryAttributeService.getAll();
-		return ResponseEntity.ok(ApiResponse.success("", lvDefDTOs));
+	public List<CategoryAttributeDTO> getAll(){
+		return mvCategoryAttributeService.getAll();
 	}
 	@GetMapping("/{pId}")
 	@Operation(summary = "Get CategoryAttribute by id")
-	public ResponseEntity<ApiResponse<?>> getById(
+	public CategoryAttributeDTO getById(
 			@Parameter(description = "ID of CategoryAttribute", required = true)
 			@PathVariable Long pId) throws BussinessException{
-		CategoryAttributeDTO lvDefDTO = mvCategoryAttributeService.findById(pId);
-		return ResponseEntity.ok(ApiResponse.success("", lvDefDTO));
+		return mvCategoryAttributeService.findById(pId);
 	}
-//	@PatchMapping("/{pId}")
-//	public ResponseEntity<ApiResponse<?>> update(@PathVariable Long pId, @RequestBody CategoryAttributeReq pReq) throws BussinessException{
-//		CategoryAttributeDTO lvDefDTO =  mvCategoryAttributeService.update(pId, pReq);
-//		return ResponseEntity.ok(ApiResponse.success("", lvDefDTO));
-//	}
+
 	@DeleteMapping("/{pId}")
-	public ResponseEntity<ApiResponse<?>> deletebyId(@PathVariable Long pId) throws BussinessException{
+	public void deletebyId(@PathVariable Long pId) throws BussinessException{
 		mvCategoryAttributeService.deleteById(pId);
-		return ResponseEntity.ok(ApiResponse.success("CategoryAttribute is deleted successfully!", ITagCode.SUCCESS));
 	}
 }

@@ -26,7 +26,6 @@ import com.ttl.common.response.ProductResponse;
 @RequestMapping("/products")
 public class ProductController {
 
-	
 	private final ProductService mvProductService;
 	
 	public ProductController(ProductService pProductService) {
@@ -35,26 +34,23 @@ public class ProductController {
 	}
 
 	@GetMapping()
-	public ResponseEntity<ApiResponse<?>> getAll(){
-		List<ProductDTO> lvProductDTOs = mvProductService.getAll();
-		return ResponseEntity.ok(ApiResponse.success(ITagCode.SUCCESS, lvProductDTOs));
+	public List<ProductDTO> getAll(){
+		return mvProductService.getAll();
 	}
 	
 	@GetMapping("/{pId}")
-	public ResponseEntity<ApiResponse<?>> getById(@PathVariable Long pId) throws BussinessException{
-		ProductDTO lvProductDTO = mvProductService.getById(pId);
-		return ResponseEntity.ok(ApiResponse.success(ITagCode.SUCCESS, lvProductDTO));
+	public ProductDTO getById(@PathVariable Long pId) throws BussinessException{
+		return mvProductService.getById(pId);
 	}
 	
 	@PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-	public ResponseEntity<ApiResponse<?>>createProduct(
+	public ProductResponse createProduct(
 	        @RequestPart("product") String productJson,
 	        @RequestPart(value = "images", required = false) List<MultipartFile> images
 	) throws JsonProcessingException, BussinessException {
 	    // Parse JSON thủ công
 	    ObjectMapper mapper = new ObjectMapper();
 	    ProductDTO request = mapper.readValue(productJson, ProductDTO.class);
-		ProductResponse lvResponse = 	mvProductService.create(request, images );
-		return ResponseEntity.ok(ApiResponse.success(ITagCode.SUCCESS, lvResponse));
+		return mvProductService.create(request, images );
 	}
 }

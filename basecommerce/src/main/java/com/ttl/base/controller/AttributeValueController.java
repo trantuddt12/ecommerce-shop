@@ -1,65 +1,47 @@
 package com.ttl.base.controller;
 
-import java.util.List;
-
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.ttl.base.service.AttributeValService;
-import com.ttl.common.constant.ApiResponse;
-import com.ttl.common.constant.ITagCode;
 import com.ttl.common.dto.AttributeValueDTO;
 import com.ttl.common.exception.BussinessException;
 import com.ttl.common.request.AttributeValReq;
-
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import jakarta.annotation.Resource;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/attval")
 public class AttributeValueController {
-	private final AttributeValService mvAttributeValService;
-	
-	public AttributeValueController(AttributeValService pAttributeService) {
-		super();
-		this.mvAttributeValService = pAttributeService;
-	}
+
+    @Resource
+    private AttributeValService mvAttributeValService;
+
 
 	@PostMapping
-	public ResponseEntity<ApiResponse<?>> create(@RequestBody AttributeValReq pRequest) throws BussinessException{
-		AttributeValueDTO lvDTO = mvAttributeValService.create(pRequest);
-		return ResponseEntity.ok(ApiResponse.success("Attribute is created successfully!", lvDTO));
+	public AttributeValueDTO create(@RequestBody AttributeValReq pRequest) throws BussinessException{
+		return mvAttributeValService.create(pRequest);
 	}
 	@GetMapping
-	public ResponseEntity<ApiResponse<?>> getAll(){
-		List<AttributeValueDTO> lvDefDTOs = mvAttributeValService.getAll();
-		return ResponseEntity.ok(ApiResponse.success("", lvDefDTOs));
+	public List<AttributeValueDTO> getAll(){
+		return mvAttributeValService.getAll();
 	}
 	@GetMapping("/{pId}")
 	@Operation(summary = "Get AttributeVal by id")
-	public ResponseEntity<ApiResponse<?>> getById(
+	public AttributeValueDTO getById(
 			@Parameter(description = "ID of AttributeVal", required = true)
 			@PathVariable Long pId) throws BussinessException{
-		AttributeValueDTO lvDefDTO = mvAttributeValService.getById(pId);
-		return ResponseEntity.ok(ApiResponse.success("", lvDefDTO));
+		return mvAttributeValService.getById(pId);
 	}
 	
 	@PatchMapping("/{pId}")
-	public ResponseEntity<ApiResponse<?>> update(@PathVariable Long pId, @RequestBody AttributeValReq pReq) throws BussinessException{
-		AttributeValueDTO lvDefDTO =  mvAttributeValService.update(pId, pReq);
-		return ResponseEntity.ok(ApiResponse.success("", lvDefDTO));
+	public AttributeValueDTO update(@PathVariable Long pId, @RequestBody AttributeValReq pReq) throws BussinessException{
+		return mvAttributeValService.update(pId, pReq);
 	}
 	
 	@DeleteMapping("/{pId}")
-	public ResponseEntity<ApiResponse<?>> deletebyId(@PathVariable Long pId) throws BussinessException{
+	public void deletebyId(@PathVariable Long pId) throws BussinessException{
 		mvAttributeValService.deleteById(pId);
-		return ResponseEntity.ok(ApiResponse.success("Attribute is deleted successfully!", ITagCode.SUCCESS));
 	}
 }

@@ -34,31 +34,26 @@ public class AttributeDefController {
 	}
 
 	@PostMapping
-	public ResponseEntity<ApiResponse<?>> create(@RequestBody AttributeDefReq pRequest){
-		AttributeDefDTO lvDefDTO = mvAttributeService.create(pRequest);
-		return ResponseEntity.ok(ApiResponse.success("Attribute is created successfully!", lvDefDTO));
+	public AttributeDefDTO create(@RequestBody AttributeDefReq pRequest){
+		return mvAttributeService.create(pRequest);
 	}
 	@GetMapping
-	public ResponseEntity<ApiResponse<?>> getAll(){
-		List<AttributeDefDTO> lvDefDTOs = mvAttributeService.getAll();
-		return ResponseEntity.ok(ApiResponse.success("", lvDefDTOs));
+	public List<AttributeDefDTO> getAll(){
+		return mvAttributeService.getAll();
 	}
 	@GetMapping("/{pId}")
 	@Operation(summary = "Get AttributeDef by id")
-	public ResponseEntity<ApiResponse<?>> getById(
+	public AttributeDefDTO getById(
 			@Parameter(description = "ID of AttributeDef", required = true)
 			@PathVariable Long pId) throws BussinessException{
-		AttributeDefDTO lvDefDTO = mvAttributeService.getById(pId);
-		return ResponseEntity.ok(ApiResponse.success("", lvDefDTO));
+		return mvAttributeService.getById(pId);
 	}
 	@PatchMapping("/{pId}")
-	public ResponseEntity<ApiResponse<?>> update(@PathVariable Long pId, @RequestBody AttributeDefReq pReq) throws BussinessException{
-		AttributeDefDTO lvDefDTO =  mvAttributeService.update(pId, pReq);
-		return ResponseEntity.ok(ApiResponse.success("", lvDefDTO));
+	public AttributeDefDTO update(@PathVariable Long pId, @RequestBody AttributeDefReq pReq) throws BussinessException{
+		return mvAttributeService.update(pId, pReq);
 	}
 	@DeleteMapping("/{pId}")
-	public ResponseEntity<ApiResponse<?>> deletebyId(@PathVariable Long pId) throws BussinessException{
+	public void deleteById(@PathVariable Long pId) throws BussinessException{
 		mvAttributeService.deleteById(pId);
-		return ResponseEntity.ok(ApiResponse.success("Attribute is deleted successfully!", ITagCode.SUCCESS));
 	}
 }
