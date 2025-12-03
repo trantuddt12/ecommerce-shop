@@ -1,35 +1,37 @@
-version: "3.9"
-services:
-  elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:8.15.2
-    environment:
-      - discovery.type=single-node
-      - ELASTIC_PASSWORD=123456       # mật khẩu cho user "elastic"
-      - ES_JAVA_OPTS=-Xms1g -Xmx1g
-    volumes:
+version: "3.9"   # Phiên bản file Docker Compose. 3.9 hỗ trợ các tính năng mạng và volume nâng cao.
+
+services:   # Khai báo các dịch vụ (container) sẽ chạy
+
+  elasticsearch:   # Service Elasticsearch
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.15.2   # Image chính thức Elasticsearch 8.15.2 từ Elastic Docker Registry
+    environment:   # Các biến môi trường cấu hình Elasticsearch
+      - discovery.type=single-node     # Chạy chế độ single-node (dev/local), không tạo cluster nhiều node
+      - xpack.security.enabled=false   # TẮT security (username/password + HTTPS) để dev nhanh, dùng HTTP bình thường
+      # Lưu ý: nếu bật security (true), Kibana 8.x không được dùng user "elastic" mà phải dùng service account
+      - ES_JAVA_OPTS=-Xms1g -Xmx1g   # Cấu hình bộ nhớ JVM cho Elasticsearch (min 1G, max 1G)
+    volumes:   # Persistent data, lưu dữ liệu ra host để không mất khi container restart
       - esdata:/usr/share/elasticsearch/data
-    ports:
-      - "9200:9200"
-      - "9300:9300"                    # transport port (cluster)
-    networks:
+    ports:   # Mapping port host → container
+      - "9200:9200"   # HTTP port Elasticsearch (API)
+      - "9300:9300"   # Transport port (cluster communication, internal)
+    networks:   # Chỉ định network mà container sẽ tham gia
       - elastic-net
 
-  kibana:
-    image: docker.elastic.co/kibana/kibana:8.15.2
-    depends_on:
+  kibana:   # Service Kibana (UI quản trị Elasticsearch)
+    image: docker.elastic.co/kibana/kibana:8.15.2   # Image Kibana 8.15.2
+    depends_on:   # Kibana sẽ start sau Elasticsearch
       - elasticsearch
     ports:
-      - "5601:5601"
-    environment:
-      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
-      - ELASTICSEARCH_USERNAME=elastic
-      - ELASTICSEARCH_PASSWORD=123456
+      - "5601:5601"   # Mapping port host → container, Kibana UI truy cập qua localhost:5601
+    environment:   # Biến môi trường config Kibana
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200   # Kibana kết nối tới Elasticsearch qua HTTP
+      # Không dùng username/password vì security đã tắt
     networks:
-      - elastic-net
+      - elastic-net   # Cùng network với Elasticsearch để Kibana có thể tìm container "elasticsearch"
 
-volumes:
-  esdata:
+volumes:   # Khai báo volume để lưu dữ liệu persistent
+  esdata:   # volume tên "esdata", được mount vào /usr/share/elasticsearch/data trong container
 
-networks:
+networks:   # Khai báo network riêng cho project
   elastic-net:
-    driver: bridge
+    driver: bridge   # Network kiểu bridge (container cùng network có thể kết nối nhau bằng tên service)
