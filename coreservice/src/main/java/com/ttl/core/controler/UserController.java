@@ -4,22 +4,25 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ttl.common.exception.BussinessException;
 import com.ttl.common.exception.UserNotFoundException;
 import com.ttl.core.entities.User;
 import com.ttl.core.repository.UserRepository;
+import com.ttl.core.request.RegisterRequest;
 import com.ttl.core.request.UpdateUserRequest;
 import com.ttl.core.service.UserService;
 
 import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/user")
 public class UserController {
 	@Autowired
 	private UserRepository mvUserRepository;
@@ -27,11 +30,10 @@ public class UserController {
 	@Autowired
 	private UserService mvUserService;
 	
-//	@PostMapping("")
-//	public ResponseEntity<ApiResponse<?>> addUser(@RequestBody RegisterRequest pUser) {
-//		User lvUser = mvUserService.register(pUser);
-//		return ResponseEntity.ok(ApiResponse.success("", lvUser));
-//	}
+	@PostMapping("")
+	public User addUser(@RequestBody RegisterRequest pUser) throws BussinessException {
+		return mvUserService.register(pUser);
+	}
 	
 	@PostMapping("/update")
 	public ResponseEntity<User> updateUser(@RequestBody UpdateUserRequest pUser) throws UserNotFoundException {
@@ -58,6 +60,7 @@ public class UserController {
 //		}
 //	}
 	@GetMapping("")
+	@PreAuthorize("hasAuthority('PRODUCT_VIEW')")
 	public ResponseEntity<List<User>> getAll(HttpServletRequest request){
 		
 		if (request.getCookies() != null) {

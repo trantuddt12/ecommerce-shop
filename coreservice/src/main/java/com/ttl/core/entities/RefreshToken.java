@@ -13,7 +13,7 @@ import lombok.*;
 public class RefreshToken extends AbstractEntity{
 
     @Column
-	private String userId;
+	private Long userId;
 	
 	@Column(nullable = false, unique = true)
 	private String tokenId;

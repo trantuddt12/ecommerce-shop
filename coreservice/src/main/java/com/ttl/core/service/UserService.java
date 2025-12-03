@@ -1,16 +1,25 @@
 package com.ttl.core.service;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.ttl.common.constant.ITag;
 import com.ttl.common.constant.ITagCode;
+import com.ttl.common.exception.BussinessException;
 import com.ttl.common.exception.UserNotFoundException;
 import com.ttl.common.utilities.CoreUtils;
 import com.ttl.core.config.JwtTokenService;
+import com.ttl.core.entities.Role;
 import com.ttl.core.entities.User;
 import com.ttl.core.repository.RoleRepository;
 import com.ttl.core.repository.UserRepository;
+import com.ttl.core.request.RegisterRequest;
 import com.ttl.core.request.UpdateUserRequest;
 
 @Service
@@ -34,19 +43,33 @@ public class UserService  {
 		this.mvJwtTokenService = mvJwtTokenService;
 	}
 
-//	public User register(RegisterRequest pUserRequest) {
-//		String lvUserId = mvSerialService.getNextSerial(ITag.USERID);
-//		List<Role> lvRole = mvRoleRepository.findAllById(pUserRequest.getRoleId());
-//		User lvUser = User.builder()
-//				.id(lvUserId)
-//				.username(pUserRequest.getUsername())
-//				.password(lvEncoder.encode(pUserRequest.getPassword()))
-//				.email(pUserRequest.getEmail())
-//				.phonenumber(pUserRequest.getPhonenumber())
-//				.roles(new HashSet<>(lvRole))
-//				.build();s
-//		return mvUserRepository.save(lvUser);
-//	}
+	public User register(RegisterRequest pUserRequest) throws BussinessException {
+	    // Lấy ID user mới (nếu bạn dùng serial service)
+	    String lvUserId = mvSerialService.getNextSerial(ITag.USERID);
+
+	    // Lấy role từ DB
+	    Optional<Role> lvRoleOpt = mvRoleRepository.findById(Long.valueOf(pUserRequest.getRoleId()));
+	    if (lvRoleOpt.isEmpty()) {
+	        throw new BussinessException("Role not found with ID: " + pUserRequest.getRoleId(), ITagCode.UNKNOWN_ERROR, getClass());
+	    }
+
+	    Set<Role> roles = new HashSet<>();
+	    roles.add(lvRoleOpt.get());
+
+	    // Tạo user mới
+	    User lvUser = User.builder()
+	            .username(pUserRequest.getUsername())
+	            .password(lvEncoder.encode(pUserRequest.getPassword()))
+	            .email(pUserRequest.getEmail())
+	            .phoneNumber(pUserRequest.getPhonenumber())
+	            .roles(roles)
+	            .status("A") // nếu bạn muốn default status
+	            .build();
+
+	    // Lưu user vào repository
+	    return mvUserRepository.save(lvUser);
+	}
+
 
 	public User updateUser(UpdateUserRequest pUser) throws UserNotFoundException {
 		User lvUser = mvUserRepository.findById(Long.valueOf(pUser.getId()))

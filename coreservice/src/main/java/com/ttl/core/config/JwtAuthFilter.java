@@ -28,7 +28,6 @@ public class JwtAuthFilter extends OncePerRequestFilter{
 		this.mvUserDetailsService = pDetailsService;
 	}
 
-
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
@@ -45,8 +44,6 @@ public class JwtAuthFilter extends OncePerRequestFilter{
 				SecurityContextHolder.getContext().setAuthentication(lvAuthentication);
 			}
 		}
-		
 		filterChain.doFilter(request, response);
 	}
-
 }

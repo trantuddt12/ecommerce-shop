@@ -8,16 +8,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Table(name = "scperermission")
+@Table(name = "permissions")
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Data
-public class Permission {
-	
-	@Id
-	private String id;
+public class Permission extends AbstractEntity{
 	
 	private String name;
 	

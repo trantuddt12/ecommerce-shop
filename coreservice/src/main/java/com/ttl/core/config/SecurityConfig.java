@@ -8,6 +8,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,6 +20,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import com.ttl.core.service.CustomUserDetailsService;
 
 @Configuration
+@EnableMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
 
     private final CustomUserDetailsService userDetailsService;
@@ -34,13 +36,14 @@ public class SecurityConfig {
         	.cors(Customizer.withDefaults())
         	.csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/admin/**").hasAuthority("ADMIN_ACCESS")
-                .requestMatchers("/product/view").hasAuthority("PRODUCT_VIEW")
-                .requestMatchers("/api/auth/**").permitAll() // hoặc hasAuthority(...) nếu cần quyền
-                .requestMatchers("/health-check").permitAll()
-                .requestMatchers("/brands/**").permitAll()
-                .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
-//                .requestMatchers("/api/auth/", "/api/auth/refresh").permitAll()
+            	.requestMatchers("/auth/**"
+            			, "/health-check"
+            			, "/brands"
+            			, "/v3/api-docs/**"
+            			, "/swagger-ui/**"
+            			, "/role/**"
+            			, "/user/**"
+            			).permitAll()
                 .anyRequest().authenticated() // hoặc authenticated() nếu muốn bảo vệ API còn lại
             )
             .addFilterBefore(mvJwtAuthFilter, UsernamePasswordAuthenticationFilter.class)

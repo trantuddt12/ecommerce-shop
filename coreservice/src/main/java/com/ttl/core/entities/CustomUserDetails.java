@@ -23,18 +23,12 @@ public class CustomUserDetails implements UserDetails {
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-//		Set<String> lvPermissionName = mvUser.getRoles().stream()
-//				.flatMap(role -> role.getPermissions().stream())
-//				.map(permission -> permission.getName())
-//				.collect(Collectors.toSet());
-		Set<String> lvRole = mvUser.getRoles().stream()
-				.map(role ->role.getName())
-				.collect(Collectors.toSet());
-				
-		List<SimpleGrantedAuthority> authotities = lvRole.stream()
-				.map(SimpleGrantedAuthority :: new)
-				.collect(Collectors.toList());
-		return authotities;
+		// map Role → Permissions → GrantedAuthority
+        return mvUser.getRoles().stream()
+                .flatMap(role -> role.getPermissions().stream())
+                .map(Permission::getName)
+                .map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toSet());
 	}
 
 	@Override
@@ -50,5 +44,4 @@ public class CustomUserDetails implements UserDetails {
 	public User getUser() {
 		return mvUser;
 	}
-
 }

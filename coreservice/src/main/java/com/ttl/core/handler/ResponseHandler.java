@@ -19,6 +19,11 @@ import java.util.Collection;
 public class ResponseHandler implements ResponseBodyAdvice<Object> {
     @Override
     public boolean supports(MethodParameter returnType, Class converterType) {
+    	// Chỉ wrap API bình thường, không wrap Swagger/OpenAPI
+        String packageName = returnType.getContainingClass().getPackageName();
+        if (packageName.startsWith("org.springdoc") || packageName.startsWith("io.swagger")) {
+            return false;
+        }
         return true;
     }
 
