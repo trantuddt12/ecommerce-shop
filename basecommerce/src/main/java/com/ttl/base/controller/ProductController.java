@@ -23,7 +23,7 @@ import com.ttl.common.response.ProductResponse;
 
 
 @RestController
-@RequestMapping("/product")
+@RequestMapping("/products")
 public class ProductController {
 
 	

@@ -1,13 +1,10 @@
 package com.ttl.base.repositories;
 
-import com.ttl.core.repository.BaseRepository;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
-
 import com.ttl.base.entities.Brand;
-
+import com.ttl.core.repository.BaseRepository;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import org.springframework.stereotype.Repository;
 
 @Repository
 public interface BrandRepository extends BaseRepository<Brand> {

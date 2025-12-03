@@ -38,6 +38,7 @@ public class SecurityConfig {
                 .requestMatchers("/product/view").hasAuthority("PRODUCT_VIEW")
                 .requestMatchers("/api/auth/**").permitAll() // hoặc hasAuthority(...) nếu cần quyền
                 .requestMatchers("/health-check").permitAll()
+                .requestMatchers("/brands/**").permitAll()
                 .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
 //                .requestMatchers("/api/auth/", "/api/auth/refresh").permitAll()
                 .anyRequest().authenticated() // hoặc authenticated() nếu muốn bảo vệ API còn lại

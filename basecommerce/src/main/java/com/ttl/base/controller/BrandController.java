@@ -1,24 +1,12 @@
 package com.ttl.base.controller;
 
-import java.util.List;
-
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.ttl.base.service.BrandService;
-import com.ttl.common.constant.ApiResponse;
-import com.ttl.common.constant.ITagCode;
 import com.ttl.common.dto.BrandDTO;
 import com.ttl.common.exception.BussinessException;
-
 import io.swagger.v3.oas.annotations.Operation;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/brands")
@@ -33,31 +21,26 @@ public class BrandController {
 	
 	@PostMapping()
 	@Operation(summary = "Create Brand")
-	public ResponseEntity<ApiResponse<?>> create(@RequestBody BrandDTO pReq) throws BussinessException{
-		BrandDTO lvBrandDTO = mvBrandService.create(pReq);
-		return ResponseEntity.ok(ApiResponse.success(ITagCode.SUCCESS, lvBrandDTO));
+	public BrandDTO create(@RequestBody BrandDTO pReq) throws BussinessException{
+		return mvBrandService.create(pReq);
 	}
 	@GetMapping
 	@Operation(summary = "Get All Brand")
-	public ResponseEntity<ApiResponse<?>> getAll() throws BussinessException{
-		List<BrandDTO> lvBrandDTOs = mvBrandService.findAll();
-		return ResponseEntity.ok(ApiResponse.success(ITagCode.SUCCESS, lvBrandDTOs));
+	public List<BrandDTO> getAll() throws BussinessException{
+		return mvBrandService.findAll();
 	}
 	@PutMapping("/update")
 	@Operation(summary = "Update Brand")
-	public ResponseEntity<ApiResponse<?>> update(@RequestBody BrandDTO pReq) throws BussinessException{
-		BrandDTO lvBrandDTO = mvBrandService.update(pReq);
-		return ResponseEntity.ok(ApiResponse.success(ITagCode.SUCCESS, lvBrandDTO));
+	public BrandDTO update(@RequestBody BrandDTO pReq) throws BussinessException{
+		return mvBrandService.update(pReq);
 	}
-	@GetMapping("/id")
+	@GetMapping("/{pId}")
 	@Operation(summary = "Get Brand By Brand Id")
-	public ResponseEntity<ApiResponse<?>> getById(@RequestParam Long pId) throws BussinessException{
-		BrandDTO lvBrandDTO = mvBrandService.findById(pId);
-		return ResponseEntity.ok(ApiResponse.success(ITagCode.SUCCESS, lvBrandDTO));
+	public BrandDTO getById(@RequestParam Long pId) throws BussinessException{
+		return mvBrandService.findById(pId);
 	}
 	@DeleteMapping()
-	public ResponseEntity<ApiResponse<?>> delete(@RequestParam Long pId) throws BussinessException{
+	public void delete(@RequestParam Long pId) throws BussinessException{
 		mvBrandService.deleteById(pId);
-		return ResponseEntity.ok(ApiResponse.success(ITagCode.SUCCESS, "Brand with id : %d is deleted successfully!"));
 	}
 }

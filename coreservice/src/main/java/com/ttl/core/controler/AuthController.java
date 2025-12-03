@@ -1,21 +1,5 @@
 package com.ttl.core.controler;
 
-import java.util.Map;
-import java.util.concurrent.ExecutionException;
-
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseCookie;
-import org.springframework.http.ResponseEntity;
-//import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.util.WebUtils;
-
 import com.ttl.common.constant.ApiResponse;
 import com.ttl.common.constant.ITag;
 import com.ttl.common.constant.ITagCode;
@@ -23,17 +7,25 @@ import com.ttl.common.exception.BussinessException;
 import com.ttl.common.exception.UserNotFoundException;
 import com.ttl.common.utilities.CoreUtils;
 import com.ttl.core.config.OtpGeneration;
-import com.ttl.core.entities.User;
 import com.ttl.core.request.LoginRequest;
 import com.ttl.core.request.RegisterRequest;
 import com.ttl.core.response.LoginResponse;
 import com.ttl.core.service.AuthService;
 import com.ttl.core.service.OtpEmailService;
 import com.ttl.core.service.OtpRedisService;
-
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.WebUtils;
+
+import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 @RestController
 @RequestMapping("/api/auth")
