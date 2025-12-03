@@ -2,10 +2,11 @@ package com.ttl.base.mapper;
 
 import java.util.List;
 
-import com.ttl.base.entities.Image;
+import org.mapstruct.Builder;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import com.ttl.base.entities.Image;
 import com.ttl.base.entities.Product;
 import com.ttl.base.entities.ProductVariant;
 import com.ttl.base.entities.ProductVariantAttribute;
@@ -17,28 +18,28 @@ import com.ttl.common.request.ProductCreateRequest;
 import com.ttl.common.response.ProductResponse;
 
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", builder = @Builder(disableBuilder = true))
 public interface ProductMapper {
 
     // Map thẳng các field primitive
     @Mapping(target = "id", ignore = true) // id tự sinh
-    @Mapping(target = "images", ignore = true)
-    @Mapping(target = "variants", ignore = true)
+//    @Mapping(target = "images", ignore = true)
+//    @Mapping(target = "variants", ignore = true)
     @Mapping(target = "status", ignore = true)
 //    @Mapping(target = "attributes", ignore = true) // xử lý riêng ở @AfterMapping
     Product toEntity(ProductCreateRequest req);
     
  // Map thẳng các field primitive
     @Mapping(target = "id", ignore = true) // id tự sinh
-    @Mapping(target = "images", ignore = true)
-    @Mapping(target = "variants", ignore = true)
+//    @Mapping(target = "images", ignore = true)
+//    @Mapping(target = "variants", ignore = true)
     @Mapping(target = "status", ignore = true)
 //    @Mapping(target = "attributes", ignore = true) // xử lý riêng ở @AfterMapping | đã có CategoryAttribute làm attribute chung
     Product dtoToEntity(ProductDTO req);
 
     // Map con
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "product", ignore = true) // set lại ở @AfterMapping
+//    @Mapping(target = "product", ignore = true) // set lại ở @AfterMapping
     Image toEntityPI(ProductImageDTO dto);
     
     
@@ -63,8 +64,8 @@ public interface ProductMapper {
     @Mapping(target =  "attributeDef.id", source = "attributeDefId")
     ProductVariantAttribute toEntityPVA(ProductVariantAttributeDTO dto);
 	
-	@Mapping(target = "productId", source = "product.id")
-	ProductImageDTO toDtoPI(Image productImage);
-
-    ProductImageDTO toDtoPI(Image Images);
+//	@Mapping(target = "productId", source = "product.id")
+//	ProductImageDTO toDtoPI(Image productImage);
+//
+//    ProductImageDTO toDtoPI(Image Images);
 }

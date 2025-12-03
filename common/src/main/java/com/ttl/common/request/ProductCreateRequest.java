@@ -34,8 +34,8 @@ public class ProductCreateRequest {
 	
 	private ProductStatus status;
 	
-    private List<ProductImageDTO> images;
-
-    private List<ProductVariantDTO> variants = new ArrayList<>();
+//    private List<ProductImageDTO> images;
+//
+//    private List<ProductVariantDTO> variants = new ArrayList<>();
 }
 

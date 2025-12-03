@@ -3,6 +3,7 @@ package com.ttl.base.mapper;
 import java.util.List;
 
 import org.mapstruct.BeanMapping;
+import org.mapstruct.Builder;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
@@ -12,7 +13,7 @@ import com.ttl.base.entities.AttributeValue;
 import com.ttl.common.dto.AttributeValueDTO;
 import com.ttl.common.request.AttributeValReq;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", builder = @Builder(disableBuilder = true))
 public interface AttributeValMapper {
 	
 	AttributeValueDTO toDto(AttributeValue entity);

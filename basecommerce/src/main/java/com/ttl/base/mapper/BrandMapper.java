@@ -17,7 +17,7 @@ public interface BrandMapper {
 
     Brand toEntity(BrandDTO dto);
     
-    @Mapping(target = "id", ignore = true)
+//    @Mapping(target = "id", ignore = true)
     Brand createEntityFrom(BrandDTO dto);
     
     @Mapping(target = "id", ignore = true)
@@ -28,7 +28,7 @@ public interface BrandMapper {
     
     BrandCreateRequest toRequest(Brand brand);
     
-    @Mapping(target = "id", ignore = true)
+//    @Mapping(target = "id", ignore = true)
     Brand reqToEntity(BrandCreateRequest dto);
 
     List<BrandCreateRequest> reqToList(List<Brand> brands);

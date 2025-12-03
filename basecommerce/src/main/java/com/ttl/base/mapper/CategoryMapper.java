@@ -7,49 +7,58 @@ import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
+import org.mapstruct.Named;
 
+import com.ttl.base.entities.AttributeDef;
 import com.ttl.base.entities.Category;
 import com.ttl.base.entities.CategoryAttribute;
 import com.ttl.common.dto.CategoryAttributeDTO;
 import com.ttl.common.dto.CategoryDTO;
-
 @Mapper(componentModel = "spring")
 public interface CategoryMapper {
 
-	@Mapping(source = "parent.id", target = "parentId")
-    @Mapping(source = "categories", target = "childrenIds")
-	@Mapping(source = "attributes", target = "attributes")
+    @Mapping(source = "parent.id", target = "parentId")
+    @Mapping(source = "categories", target = "childrenIds", qualifiedByName = "mapCategoryIds")
     CategoryDTO toDto(Category category);
-	
-	@Mapping(target = "categoryId", source = "category.id")
+
+    @Mapping(target = "categoryId", source = "category.id")
     @Mapping(target = "attributeDefId", source = "attributeDef.id")
     CategoryAttributeDTO entityToCategoryAttributeDto(CategoryAttribute entity);
 
     List<CategoryDTO> toDtoList(List<Category> categories);
-    
-    @Mapping(target = "id", ignore = true)
+
+    // --- CREATE MAPPING (REQUEST -> ENTITY) ---
     @Mapping(target = "category", ignore = true)
-    @Mapping(target = "attributeDef.id", source = "attributeDefId")
+    @Mapping(target = "attributeDef", expression = "java(toAttributeDef(dto.getAttributeDefId()))")
     CategoryAttribute dtoToCategoryAttribute(CategoryAttributeDTO dto);
-    
-    @Mapping(target = "id", ignore = true)
+
+    // --- UPDATE MAPPING ---
     @Mapping(target = "category", ignore = true)
     @Mapping(target = "attributeDef", ignore = true)
     void updateCategoryAttributeByDto(CategoryAttributeDTO dto, @MappingTarget CategoryAttribute entity);
-    
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "parent", ignore = true) // bỏ parent.id đi
+
+    @AfterMapping
+    default void fillAfterUpdate(CategoryAttributeDTO dto, @MappingTarget CategoryAttribute entity) {
+        if (dto.getAttributeDefId() != null) {
+            AttributeDef def = new AttributeDef();
+            def.setId(dto.getAttributeDefId());
+            entity.setAttributeDef(def);
+        }
+    }
+
+    // --- CATEGORY CREATE ---
+    @Mapping(target = "parent", ignore = true)
     @Mapping(target = "categories", ignore = true)
     @Mapping(target = "attributes", ignore = true)
     Category createDtoToEntity(CategoryDTO dto);
-    
+
+    // --- CATEGORY UPDATE ---
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "slug", ignore = true)
     @Mapping(target = "parent", ignore = true)
     @Mapping(target = "categories", ignore = true)
     @Mapping(target = "attributes", ignore = true)
     void updateByDto(CategoryDTO dto, @MappingTarget Category entity);
-    
 
     @AfterMapping
     default void handleParent(CategoryDTO dto, @MappingTarget Category category) {
@@ -62,13 +71,19 @@ public interface CategoryMapper {
         }
     }
 
-    // 👇 Custom mapping method: Set<Category> -> List<Long>
-    default List<Long> map(Set<Category> categories) {
+    @Named("mapCategoryIds")
+    default List<Long> mapCategoryIds(Set<Category> categories) {
         if (categories == null) return null;
         return categories.stream()
                          .map(Category::getId)
                          .toList();
     }
-    
-    
+
+    // helper
+    default AttributeDef toAttributeDef(Long id) {
+        if (id == null) return null;
+        AttributeDef def = new AttributeDef();
+        def.setId(id);
+        return def;
+    }
 }

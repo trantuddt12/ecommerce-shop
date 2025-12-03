@@ -30,8 +30,8 @@ public class BrandService {
 		if(mvBrandRepository.existsByName(pRequest.getSlug())) {
 			throw new BussinessException(String.format("Brand with slug : %d is present", pRequest.getSlug()), ITagCode.DATA_ALREADY_EXISTS, getClass());
 		}
-//		Brand lvBrand = mvMapper.createEntityFrom(pRequest);
-        Brand lvBrand = null;
+		Brand lvBrand = mvMapper.createEntityFrom(pRequest);
+//        Brand lvBrand = null;
 		Brand rvBrand = mvBrandRepository.save(lvBrand);
 		 
 		return mvMapper.toDto(rvBrand);
