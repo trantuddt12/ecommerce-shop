@@ -1,40 +1,30 @@
 package com.ttl.base.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Index;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.ttl.core.entities.AbstractEntity;
+import jakarta.persistence.*;
+import lombok.*;
+import lombok.experimental.FieldNameConstants;
 
 @Entity
-@Table(name = "scattribute_value",
-       uniqueConstraints = @UniqueConstraint(name="uk_attr_value_code", columnNames={"attribute_id","code"}),
-       indexes = @Index(name="idx_attr_value_attr", columnList="attribute_id"))
+@Table(name = "attribute_values",
+       uniqueConstraints = @UniqueConstraint(name= AttributeValue.UK_ATTR_VALUE_CODE, columnNames={AbstractEntity.Fields.ID, AttributeValue.Fields.CODE}),
+       indexes = @Index(name= AttributeValue.INDEX_ATTR_VALUE_CODE, columnList=AttributeValue.Fields.ATTRIBUTE_DEF))
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
-public class AttributeValue extends AuditMetadata {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+@FieldNameConstants
+public class AttributeValue extends AbstractEntity {
+
+    public static final String UK_ATTR_VALUE_CODE = "uk_attr_value_code";
+    public static final String INDEX_ATTR_VALUE_CODE = "idx_attr_value_attr";
 
     @ManyToOne(fetch = FetchType.LAZY) 
-    @JoinColumn(name="attribute_id", nullable=false)
+    @JoinColumn(name=Fields.ATTRIBUTE_DEF, nullable=false)
     private AttributeDef attributeDef;
 
     @Column(nullable=false, length=100) 
-    private String code;        // "BLACK", "WHITE"
+    private String code;
     
     @Column(nullable=false, length=150) 
-    private String displayName; // "Black", "White"
+    private String displayName;
     
     private Integer sortOrder;
 }

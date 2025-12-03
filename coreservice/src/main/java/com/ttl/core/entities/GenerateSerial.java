@@ -15,15 +15,15 @@ public class GenerateSerial {
 
 	@Id
 	private String serialno;
-	
+
 	private String description;
-	
+
 	@Column(name = "startwith", precision = 16, scale = 0 )
 	private BigDecimal  startwith;
-	
+
 	@Column(name = "endwith", precision = 16, scale = 0)
-	private BigDecimal endwith; 
-	
+	private BigDecimal endwith;
+
 	@Column(name = "lastserial", precision = 16, scale =0)
 	private BigDecimal lastserial;
 

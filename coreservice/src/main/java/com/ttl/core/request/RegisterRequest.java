@@ -19,7 +19,7 @@ public class RegisterRequest {
 	
 //	private String phonenumber;
 //	
-	private String roleId;
+	private Long roleId;
 //	
 //	private boolean verifyOtp;
 //	

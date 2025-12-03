@@ -1,33 +1,27 @@
 package com.ttl.base.entities;
 
+import com.ttl.core.entities.AbstractEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.FieldNameConstants;
 
 @Entity
 @Table(
-    name = "scbrand",
+    name = "brands",
     uniqueConstraints = {
-        @UniqueConstraint(name = "uk_brand_slug", columnNames = "slug")
+        @UniqueConstraint(name = Brand.BRAND_CONSTRAINT_NAME, columnNames = Brand.Fields.SLUG)
     }
 )
 @Getter @Setter
 @NoArgsConstructor @AllArgsConstructor
 @Builder(toBuilder = true)
-public class Brand extends AuditMetadata {
+@FieldNameConstants
+public class Brand extends AbstractEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    public static final String BRAND_CONSTRAINT_NAME = "uk_brand_slug";
 
     @Column(length = 50, nullable = false)
     private String name;
@@ -40,18 +34,5 @@ public class Brand extends AuditMetadata {
     
     @Column(length = 100, nullable = false)
     private String slug;
-
-    @Override
-    public int hashCode() {
-        return this.getClass().hashCode();
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (!(obj instanceof Brand)) return false;
-        Brand other = (Brand) obj;
-        return id != null && id.equals(other.id);
-    }
 }
 

@@ -49,7 +49,7 @@ public class UserService  {
 //	}
 
 	public User updateUser(UpdateUserRequest pUser) throws UserNotFoundException {
-		User lvUser = mvUserRepository.findById(pUser.getId())
+		User lvUser = mvUserRepository.findById(Long.valueOf(pUser.getId()))
 				.orElseThrow(() -> new UserNotFoundException(pUser.getUsername(),ITagCode.USER_NOT_FOUND, getClass()));
 		mvModelMapper.map(pUser, lvUser);
 		lvUser.setPassword(lvEncoder.encode(pUser.getPassword()));

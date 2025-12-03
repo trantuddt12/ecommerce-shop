@@ -34,7 +34,8 @@ public class AttributeValService {
 	public AttributeValueDTO create(AttributeValReq pReq) throws BussinessException {
 		AttributeDef lvAttributeDef = mvAttDefRepository.findById(pReq.getAttributeDefId())
 				.orElseThrow(() -> new BussinessException(String.format("AttributeDef with id : %d not found!", pReq.getAttributeDefId()), ITagCode.DATA_NOT_FOUND, getClass()));
-		AttributeValue lvAttributeValue = mvMapper.createReqToEntity(pReq);
+//		AttributeValue lvAttributeValue = mvMapper.createReqToEntity(pReq);
+        AttributeValue lvAttributeValue = null;
 		lvAttributeValue.setAttributeDef(lvAttributeDef);
 		mvAttValRepository.save(lvAttributeValue);
 		return mvMapper.toDto(lvAttributeValue);
@@ -60,7 +61,7 @@ public class AttributeValService {
 	public AttributeValueDTO update(Long pId, AttributeValReq pReq) throws BussinessException {
 		AttributeValue lvAttributeVal = mvAttValRepository.findById(pId)
 				.orElseThrow(() -> new BussinessException(String.format("AttributeVal with id : %s not found!", pId), ITagCode.DATA_NOT_FOUND, getClass()));
-		mvMapper.updateAttDefByReq(pReq, lvAttributeVal);
+//		mvMapper.updateAttDefByReq(pReq, lvAttributeVal);
 		AttributeValue lvSaved = mvAttValRepository.save(lvAttributeVal);
 		return mvMapper.toDto(lvSaved);
 	}

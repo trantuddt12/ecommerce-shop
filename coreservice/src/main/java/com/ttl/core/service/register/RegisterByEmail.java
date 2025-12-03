@@ -54,21 +54,21 @@ public class RegisterByEmail implements RegisterStrategy{
 		
 		String lvUserId = mvSerialService.getNextSerial(ITag.USERID);
 		String lvUsername = pUserRequest.getEmail().toLowerCase().substring(0, pUserRequest.getEmail().indexOf("@")) + UUID.randomUUID().toString().substring(0, 3);
-		String lvRoleRq = Objects.isNull(pUserRequest.getRoleId()) ? "CUSTOMER" : pUserRequest.getRoleId();
-		Role lvRole = mvRoleRepository.findById(lvRoleRq)
+//		Long lvRoleRq = Objects.isNull(pUserRequest.getRoleId()) ? "CUSTOMER" : pUserRequest.getRoleId();
+		Role lvRole = mvRoleRepository.findById(pUserRequest.getRoleId())
 				.orElseThrow(() -> new BussinessException("Role not found!", ITagCode.DATA_NOT_FOUND, getClass())
 						);
 		User lvUser = User.builder()
-				.id(lvUserId)
+//				.id(lvUserId)
 				.username(lvUsername)
 				.password(mvEncoder.encode(pUserRequest.getPassword()))
 				.email(pUserRequest.getEmail())
-				.phonenumber("")
+				.phoneNumber("")
 				.roles(new HashSet<>(Arrays.asList(lvRole)))
 				.status("P")
 				.build();
 		User rvUser =  mvUserRepository.save(lvUser);
-		
+
 		String lvEmailToken = UUID.randomUUID().toString();
 		String lvMessage = "{ \"email\":\"" + pUserRequest.getEmail() + "\", \"token\":\"" + lvEmailToken + "\" }";
 		mvKafkaTemplate.send(ITag.Kafka_Verification_Email, lvMessage);

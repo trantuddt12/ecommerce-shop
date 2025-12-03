@@ -1,45 +1,31 @@
 package com.ttl.base.entities;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-
-import org.hibernate.annotations.DynamicUpdate;
-import org.mapstruct.Builder;
-
 import com.ttl.common.dto.AttributeScope;
 import com.ttl.common.dto.AttributeType;
-
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Index;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import com.ttl.core.entities.AbstractEntity;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.FieldNameConstants;
+import org.hibernate.annotations.DynamicUpdate;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
-@Table(name = "scattribute_def",
+@Table(name = "attribute_defs",
 indexes = {
-  @Index(name = "idx_attr_code", columnList = "code", unique = true)
+  @Index(name = AttributeDef.INDEX_ATTRIBUTE_DEF, columnList = AttributeDef.Fields.CODE, unique = true)
 })
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor 
 //@Builder
 @DynamicUpdate //chỉ nên dùng khi chỉ update ít fields
-public class AttributeDef extends AuditMetadata{
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+@FieldNameConstants
+public class AttributeDef extends AbstractEntity {
+
+    public static final String INDEX_ATTRIBUTE_DEF = "idx_attr_code";
 	
 	@Column(nullable = false, length = 50)
 	private String code; //color, size
@@ -62,34 +48,7 @@ public class AttributeDef extends AuditMetadata{
 	private boolean variant; // true = dùng cho ProductVariant, false = Product
 	
 //	@Builder.Default
-	@OneToMany(mappedBy = "attributeDef", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = AttributeValue.Fields.ATTRIBUTE_DEF, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	List<AttributeValue> attributeValues = new ArrayList<AttributeValue>();
-	
-	public void addAttValue(AttributeValue pAttValue) {
-		attributeValues.add(pAttValue);
-		pAttValue.setAttributeDef(this);
-	}
-	
-	public void remove(AttributeValue pAttValue) {
-		attributeValues.remove(pAttValue);
-		pAttValue.setAttributeDef(null);
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(code, id);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		AttributeDef other = (AttributeDef) obj;
-		return Objects.equals(code, other.code) && Objects.equals(id, other.id);
-	}
 
 }

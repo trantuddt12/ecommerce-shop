@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.ttl.core.entities.AbstractEntity;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -22,13 +23,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "scproduct_variant")
+@Table(name = "product_variants")
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor 
 @Builder
-public class ProductVariant {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class ProductVariant extends AbstractEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id", nullable = false)
@@ -51,8 +49,4 @@ public class ProductVariant {
     @Builder.Default
     @OneToMany(mappedBy = "variant", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProductVariantAttribute> attributes = new ArrayList<>();
-    
-    public void addVariantAttribute(AttributeDef attr, String value) {
-        this.attributes.add(ProductVariantAttribute.of(this, attr, value));
-    }
 }

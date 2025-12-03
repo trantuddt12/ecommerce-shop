@@ -10,16 +10,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import com.ttl.base.entities.*;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-
-import com.ttl.base.entities.AttributeDef;
-import com.ttl.base.entities.Product;
-import com.ttl.base.entities.ProductImage;
-import com.ttl.base.entities.ProductVariant;
-import com.ttl.base.entities.ProductVariantAttribute;
 import com.ttl.base.mapper.ProductMapper;
 import com.ttl.base.repositories.AttributeDefRepository;
 import com.ttl.base.repositories.BrandRepository;
@@ -109,19 +104,19 @@ public class ProductService {
     	Product lvProduct = mvMapper.dtoToEntity(pRequest);
     	lvProduct.setStatus(ProductStatus.ACTIVE);
     	if(pImages != null && !pImages.isEmpty()) {
-    		List<ProductImage> lvProductImages = new ArrayList<ProductImage>();
+    		List<Image> lvProductImages = new ArrayList<Image>();
     		
     		for(int i= 0; i< pImages.size(); i++ ) {
     			MultipartFile lvFile = pImages.get(i);
     			String lvUrl = upload(lvFile);
-    			ProductImage lvProductImage  =  ProductImage.builder()
+                Image lvProductImage  =  Image.builder()
     					.url(lvUrl)
     					.thumbnail(i == 0)
-    					.product(lvProduct)
+//    					.product(lvProduct)
     					.build();
     			lvProductImages.add(lvProductImage);
     		}
-    		lvProduct.setImages(lvProductImages);
+//    		lvProduct.set(lvProductImages);
     	}
     	Product lvSaved = mvProductRepository.save(lvProduct);
     	
@@ -146,7 +141,7 @@ public class ProductService {
     		lvProductVariants.add(lvProductVariant);
     		
     	}
-    	lvProduct.setVariants(lvProductVariants);
+//    	lvProduct.setVariants(lvProductVariants);
     	
     	return mvMapper.toResponse(lvSaved);
     }

@@ -1,5 +1,6 @@
 package com.ttl.base.repositories;
 
+import com.ttl.core.repository.BaseRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -9,7 +10,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 @Repository
-public interface BrandRepository extends JpaRepository<Brand, Long>{
+public interface BrandRepository extends BaseRepository<Brand> {
 
 	boolean existsByName(@NotBlank @Size(max = 50) String name);
 	

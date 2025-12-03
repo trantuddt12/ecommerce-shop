@@ -1,23 +1,18 @@
 package com.ttl.core.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Table(name = "screfresh_token")
-@Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class RefreshToken extends AuditMetadata{
+@Getter
+@Setter
+public class RefreshToken extends AbstractEntity{
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
-	
+    @Column
 	private String userId;
 	
 	@Column(nullable = false, unique = true)
@@ -25,9 +20,14 @@ public class RefreshToken extends AuditMetadata{
 	
 	@Column(nullable = false, columnDefinition = "TEXT")
 	private String tokenValue;
-	
+
+    @Column
 	private String deviceId;
+
+    @Column
 	private String ipAddress;
+
+    @Column
 	private String userAgent;
 	
 	private boolean revoked;

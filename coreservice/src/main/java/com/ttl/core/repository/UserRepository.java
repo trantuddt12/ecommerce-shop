@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ttl.core.entities.User;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, String> {
+public interface UserRepository extends BaseRepository<User> {
 	Optional<User> findByUsername(String pUsername);
 	
 	@Query("SELECT u FROM User u JOIN FETCH u.roles WHERE u.username = :username")

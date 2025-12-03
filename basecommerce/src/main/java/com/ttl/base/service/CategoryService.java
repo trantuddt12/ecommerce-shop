@@ -8,6 +8,7 @@ import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import com.ttl.core.entities.AbstractEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,8 +41,9 @@ public class CategoryService {
 		this.mvMapper = mvMapper;
 	}
 	public CategoryDTO create(CategoryDTO req) throws BussinessException {
-		
-        Category category = mvMapper.createDtoToEntity(req);
+
+        Category category = null;
+//        Category category = mvMapper.createDtoToEntity(req);
 
         if (req.getParentId() != null && req.getParentId() != 0) {
             Category parent = mvCategoryRepository.findById(req.getParentId())
@@ -50,14 +52,14 @@ public class CategoryService {
         }
         List<CategoryAttribute> lvCategoryAttributes = new ArrayList<CategoryAttribute>();
         List<CategoryAttributeDTO> lvAttributeDTOs =  req.getAttributes();
-        for(CategoryAttributeDTO dto : lvAttributeDTOs) {
-        	AttributeDef lvAttributeDef = mvAttributeDefRepository.findById(dto.getAttributeDefId())
-    				.orElseThrow(() -> new BussinessException(String.format("AttributeDef with id : %s not found!", dto.getAttributeDefId()), ITagCode.DATA_NOT_FOUND, getClass()));
-        	CategoryAttribute lvCategoryAttribute = mvMapper.dtoToCategoryAttribute(dto);
-        	lvCategoryAttribute.setAttributeDef(lvAttributeDef);
-        	lvCategoryAttribute.setCategory(category);
-        	lvCategoryAttributes.add(lvCategoryAttribute);
-        }
+//        for(CategoryAttributeDTO dto : lvAttributeDTOs) {
+//        	AttributeDef lvAttributeDef = mvAttributeDefRepository.findById(dto.getAttributeDefId())
+//    				.orElseThrow(() -> new BussinessException(String.format("AttributeDef with id : %s not found!", dto.getAttributeDefId()), ITagCode.DATA_NOT_FOUND, getClass()));
+//        	CategoryAttribute lvCategoryAttribute = mvMapper.dtoToCategoryAttribute(dto);
+//        	lvCategoryAttribute.setAttributeDef(lvAttributeDef);
+//        	lvCategoryAttribute.setCategory(category);
+//        	lvCategoryAttributes.add(lvCategoryAttribute);
+//        }
         category.setAttributes(lvCategoryAttributes);
         if(CoreUtils.isNullStr(category.getSlug())) {
         	category.setSlug(CoreUtils.generateSlug(category.getName()));
@@ -75,8 +77,8 @@ public class CategoryService {
     	}
     	
     	Map<Long, CategoryAttribute> lvExistsCategoryAttribute = lvCategory.getAttributes().stream()
-    			.filter(attr -> attr.getId() != null)
-    			.collect(Collectors.toMap(CategoryAttribute :: getId, Function.identity()));
+//    			.filter(attr -> AbstractEntity::getId != null)
+    			.collect(Collectors.toMap(AbstractEntity::getId, Function.identity()));
     	
     	mvMapper.updateByDto(pCategoryReq, lvCategory);
     	lvCategory.getAttributes().clear();
@@ -85,14 +87,14 @@ public class CategoryService {
     				.orElseThrow(() -> new BussinessException(String.format("AttributeDef with id : %s not found!", dto.getAttributeDefId()), ITagCode.DATA_NOT_FOUND, getClass()));
         	CategoryAttribute lvCategoryAttribute = new CategoryAttribute();
         	// update
-        	if(dto.getId() != null && lvExistsCategoryAttribute.containsKey(dto.getId())) {
-        		lvCategoryAttribute = lvExistsCategoryAttribute.get(dto.getId());
-        		mvMapper.updateCategoryAttributeByDto(dto, lvCategoryAttribute);
-        	}else { // insert
-        		lvCategoryAttribute = mvMapper.dtoToCategoryAttribute(dto);
-        		lvCategoryAttribute.setAttributeDef(lvAttributeDef);
-            	lvCategoryAttribute.setCategory(lvCategory);
-        	}
+//        	if(dto.getId() != null && lvExistsCategoryAttribute.containsKey(dto.getId())) {
+//        		lvCategoryAttribute = lvExistsCategoryAttribute.get(dto.getId());
+//        		mvMapper.updateCategoryAttributeByDto(dto, lvCategoryAttribute);
+//        	}else { // insert
+//        		lvCategoryAttribute = mvMapper.dtoToCategoryAttribute(dto);
+//        		lvCategoryAttribute.setAttributeDef(lvAttributeDef);
+//            	lvCategoryAttribute.setCategory(lvCategory);
+//        	}
         	lvCategory.getAttributes().add(lvCategoryAttribute);
         }
     	

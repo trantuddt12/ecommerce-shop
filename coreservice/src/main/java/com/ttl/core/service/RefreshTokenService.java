@@ -29,25 +29,25 @@ public class RefreshTokenService {
 		this.mvTokenService = pTokenService;
 	}
 
-	public String saveRefreshToken(User pUser, HttpServletRequest pHttpReq) {
-		String lvUserAgent = pHttpReq.getHeader("User-Agent");   // trình duyệt, OS
-		String lvIPAddress = pHttpReq.getRemoteAddr();      
-		
-		String lvRefreshTokenValue = mvTokenService.generateRefreshToken(pUser);
-		String lvTokenId =  mvSerialService.getNextSerial(ITag.TOKENID);
-		
-		RefreshToken lvRefreshToken =  RefreshToken.builder()
-				.userId(pUser.getId())
-				.tokenId(lvTokenId)
-				.tokenValue(lvRefreshTokenValue)
-				.deviceId(UUID.randomUUID().toString())
-				.ipAddress(lvIPAddress)
-				.userAgent(lvUserAgent)
-				.revoked(false)
-				.build();
-		mvResfreshTokenRepository.save(lvRefreshToken);
-		return lvRefreshTokenValue;
-	}
+//	public String saveRefreshToken(User pUser, HttpServletRequest pHttpReq) {
+//		String lvUserAgent = pHttpReq.getHeader("User-Agent");   // trình duyệt, OS
+//		String lvIPAddress = pHttpReq.getRemoteAddr();
+//
+//		String lvRefreshTokenValue = mvTokenService.generateRefreshToken(pUser);
+//		String lvTokenId =  mvSerialService.getNextSerial(ITag.TOKENID);
+//
+//		RefreshToken lvRefreshToken =  RefreshToken.builder()
+//				.userId(pUser.getId())
+//				.tokenId(lvTokenId)
+//				.tokenValue(lvRefreshTokenValue)
+//				.deviceId(UUID.randomUUID().toString())
+//				.ipAddress(lvIPAddress)
+//				.userAgent(lvUserAgent)
+//				.revoked(false)
+//				.build();
+//		mvResfreshTokenRepository.save(lvRefreshToken);
+//		return lvRefreshTokenValue;
+//	}
 
     public boolean isValidRefreshToken(String pRefreshToken) {
     	Optional<RefreshToken> lvTokenStored = mvResfreshTokenRepository.findByTokenValue(pRefreshToken);

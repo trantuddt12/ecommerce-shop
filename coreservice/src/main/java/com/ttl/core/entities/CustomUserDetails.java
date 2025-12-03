@@ -28,7 +28,7 @@ public class CustomUserDetails implements UserDetails {
 //				.map(permission -> permission.getName())
 //				.collect(Collectors.toSet());
 		Set<String> lvRole = mvUser.getRoles().stream()
-				.map(role ->role.getId())
+				.map(role ->role.getName())
 				.collect(Collectors.toSet());
 				
 		List<SimpleGrantedAuthority> authotities = lvRole.stream()

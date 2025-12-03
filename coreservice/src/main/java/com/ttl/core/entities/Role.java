@@ -10,23 +10,21 @@ import lombok.*;
 import java.util.HashSet;
 import java.util.Set;
 
-@Table(name = "scrole")
+@Table(name = "roles")
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Data
-public class Role {
-	
-	@Id
-	private String id;
+@Getter
+@Setter
+public class Role extends AbstractEntity{
 	
 	private String name;
 	
 	private String description;
 	
 	@Builder.Default
-	@ManyToMany(mappedBy = "roles")
+	@ManyToMany(mappedBy = User.Fields.ROLES)
 	@JsonIgnore
 	@ToString.Exclude
 	@EqualsAndHashCode.Exclude

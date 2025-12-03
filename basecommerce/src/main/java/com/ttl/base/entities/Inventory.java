@@ -2,6 +2,7 @@ package com.ttl.base.entities;
 
 import java.math.BigDecimal;
 
+import com.ttl.core.entities.AbstractEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -13,18 +14,14 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-@Table(name = "scinventory")
+@Table(name = "inventories")
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder(toBuilder = true)
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class Inventory {
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
+public class Inventory extends AbstractEntity {
 	
 	private BigDecimal qty;
 }

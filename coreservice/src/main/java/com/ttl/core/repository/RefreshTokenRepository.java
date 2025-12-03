@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ttl.core.entities.RefreshToken;
 
 @Repository
-public interface RefreshTokenRepository extends JpaRepository<RefreshToken, Long>{
+public interface RefreshTokenRepository extends BaseRepository<RefreshToken>{
 
 	Optional<RefreshToken> findByTokenId(String pRefreshToken);
 

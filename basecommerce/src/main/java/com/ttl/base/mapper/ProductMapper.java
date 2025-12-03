@@ -2,11 +2,11 @@ package com.ttl.base.mapper;
 
 import java.util.List;
 
+import com.ttl.base.entities.Image;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 import com.ttl.base.entities.Product;
-import com.ttl.base.entities.ProductImage;
 import com.ttl.base.entities.ProductVariant;
 import com.ttl.base.entities.ProductVariantAttribute;
 import com.ttl.common.dto.ProductDTO;
@@ -39,7 +39,7 @@ public interface ProductMapper {
     // Map con
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "product", ignore = true) // set lại ở @AfterMapping
-    ProductImage toEntityPI(ProductImageDTO dto);
+    Image toEntityPI(ProductImageDTO dto);
     
     
     @Mapping(target = "id", ignore = true )
@@ -64,5 +64,7 @@ public interface ProductMapper {
     ProductVariantAttribute toEntityPVA(ProductVariantAttributeDTO dto);
 	
 	@Mapping(target = "productId", source = "product.id")
-	ProductImageDTO toDtoPI(ProductImage productImage);
+	ProductImageDTO toDtoPI(Image productImage);
+
+    ProductImageDTO toDtoPI(Image Images);
 }

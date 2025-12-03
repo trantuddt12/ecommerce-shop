@@ -1,18 +1,22 @@
 package com.ttl.base.mapper;
 
+import com.ttl.base.entities.Product;
+import com.ttl.base.repositories.AttributeDefRepository;
+import com.ttl.common.request.ProductCreateRequest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public abstract class ProductMapperDecorator implements ProductMapper {
 
-//    @Autowired
-//    private ProductMapper delegate; // chính là ProductMapperImpl do MapStruct generate
-//
-//    @Autowired
-//    private AttributeDefRepository attributeDefRepository;
-//
-//    @Override
-//    public Product toEntity(ProductCreateRequest req) {
+    @Autowired
+    private ProductMapper delegate; // chính là ProductMapperImpl do MapStruct generate
+
+    @Autowired
+    private AttributeDefRepository attributeDefRepository;
+
+    @Override
+    public Product toEntity(ProductCreateRequest req) {
 //        // gọi delegate để map các field đơn giản + images/variants
 //        Product product = delegate.toEntity(req);
 //
@@ -42,6 +46,7 @@ public abstract class ProductMapperDecorator implements ProductMapper {
 //        }
 //
 //        return product;
-//    }
+        return null;
+    }
 }
 

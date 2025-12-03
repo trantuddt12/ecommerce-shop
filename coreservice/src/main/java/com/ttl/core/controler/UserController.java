@@ -47,24 +47,24 @@ public class UserController {
 		return ResponseEntity.ok(ApiResponse.of(true, "Cập nhật thành công!", lvUser));
 	}
 	
-	@GetMapping(value = "/id", produces = MediaType.APPLICATION_JSON_VALUE)
-//	@Transactional(readOnly = true)
-	public ResponseEntity<ApiResponse<?>> getUser(@RequestParam String pId) {
-		User lvUser =  mvUserRepository.findUserById(pId);
-		if(!CoreUtils.isNullStr(lvUser)) {
-			UserResponse lvUserRes =  UserResponse.builder()
-					.id(lvUser.getId())
-					.username(lvUser.getUsername())
-					.email(lvUser.getEmail())
-					.phonenumber(lvUser.getPhonenumber())
-					.status(lvUser.getStatus())
-					.roleids(lvUser.getRoles().stream().map(Role::getId).collect(Collectors.toList()))
-					.build();
-			return ResponseEntity.ok(ApiResponse.of(true, " ", lvUserRes));
-		}else {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ApiResponse.of(false, "User not found with Id", null));
-		}
-	}
+//	@GetMapping(value = "/id", produces = MediaType.APPLICATION_JSON_VALUE)
+////	@Transactional(readOnly = true)
+//	public ResponseEntity<ApiResponse<?>> getUser(@RequestParam String pId) {
+//		User lvUser =  mvUserRepository.findUserById(pId);
+//		if(!CoreUtils.isNullStr(lvUser)) {
+//			UserResponse lvUserRes =  UserResponse.builder()
+//					.id(lvUser.getId())
+//					.username(lvUser.getUsername())
+//					.email(lvUser.getEmail())
+//					.phonenumber(lvUser.getPhonenumber())
+//					.status(lvUser.getStatus())
+//					.roleids(lvUser.getRoles().stream().map(Role::getId).collect(Collectors.toList()))
+//					.build();
+//			return ResponseEntity.ok(ApiResponse.of(true, " ", lvUserRes));
+//		}else {
+//			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ApiResponse.of(false, "User not found with Id", null));
+//		}
+//	}
 	@GetMapping("")
 	public ResponseEntity<ApiResponse<List<User>>> getAll(HttpServletRequest request){
 		

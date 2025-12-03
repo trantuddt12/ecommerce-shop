@@ -106,11 +106,11 @@ public class AuthController {
 	 * register : frontend send API /sendotp , send API /sendotpregister 
 	 * user verify otp by send API /verifyotp -> if susscess -> send API :register
 	 */
-	@PostMapping("/register")
-	public ResponseEntity<ApiResponse<?>> register(@RequestBody RegisterRequest pRegisterReq) throws BussinessException {
-		User lvUser = mvAuthService.register(pRegisterReq);
-		return ResponseEntity.ok(ApiResponse.success("", lvUser));
-	}
+//	@PostMapping("/register")
+//	public ResponseEntity<ApiResponse<?>> register(@RequestBody RegisterRequest pRegisterReq) throws BussinessException {
+//		User lvUser = mvAuthService.register(pRegisterReq);
+//		return ResponseEntity.ok(ApiResponse.success("", lvUser));
+//	}
 	
 	@PostMapping("/sendotp")
 	public ResponseEntity<ApiResponse<?>> sendOtp(@RequestParam String pOtpType ,@RequestParam String pToEmail){
