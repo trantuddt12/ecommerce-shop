@@ -1,0 +1,1 @@
+run docker es-kibana-docker : docker-compose -f es-kibana-docker.yml up -d
