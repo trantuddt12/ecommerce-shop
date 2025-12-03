@@ -1,27 +1,19 @@
 package com.ttl.core.controler;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ttl.common.constant.ApiResponse;
 import com.ttl.common.exception.UserNotFoundException;
-import com.ttl.common.utilities.CoreUtils;
-import com.ttl.core.entities.Role;
 import com.ttl.core.entities.User;
 import com.ttl.core.repository.UserRepository;
 import com.ttl.core.request.UpdateUserRequest;
-import com.ttl.core.response.UserResponse;
 import com.ttl.core.service.UserService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -42,9 +34,9 @@ public class UserController {
 //	}
 	
 	@PostMapping("/update")
-	public ResponseEntity<ApiResponse<?>> updateUser(@RequestBody UpdateUserRequest pUser) throws UserNotFoundException {
+	public ResponseEntity<User> updateUser(@RequestBody UpdateUserRequest pUser) throws UserNotFoundException {
 		User lvUser = mvUserService.updateUser(pUser);
-		return ResponseEntity.ok(ApiResponse.of(true, "Cập nhật thành công!", lvUser));
+		return ResponseEntity.ok(lvUser);
 	}
 	
 //	@GetMapping(value = "/id", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -66,7 +58,7 @@ public class UserController {
 //		}
 //	}
 	@GetMapping("")
-	public ResponseEntity<ApiResponse<List<User>>> getAll(HttpServletRequest request){
+	public ResponseEntity<List<User>> getAll(HttpServletRequest request){
 		
 		if (request.getCookies() != null) {
 	        for (jakarta.servlet.http.Cookie c : request.getCookies()) {
@@ -74,6 +66,6 @@ public class UserController {
 	        }
 	    }
 		List<User> lvUsers = mvUserRepository.findAll();
-		return ResponseEntity.ok(ApiResponse.of(true, "", lvUsers));
+		return ResponseEntity.ok(lvUsers);
 	}
 }
