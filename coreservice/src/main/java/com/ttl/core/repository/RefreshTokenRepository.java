@@ -14,7 +14,7 @@ import com.ttl.core.entities.RefreshToken;
 @Repository
 public interface RefreshTokenRepository extends BaseRepository<RefreshToken>{
 
-	Optional<RefreshToken> findByTokenId(String pRefreshToken);
+//	Optional<RefreshToken> findByTokenId(String pRefreshToken);
 
 	Optional<RefreshToken> findByTokenValue(String pRefreshToken);
 

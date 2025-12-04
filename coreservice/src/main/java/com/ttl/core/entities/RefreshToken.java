@@ -15,8 +15,8 @@ public class RefreshToken extends AbstractEntity{
     @Column
 	private Long userId;
 	
-	@Column(nullable = false, unique = true)
-	private String tokenId;
+//	@Column(nullable = false, unique = true)
+//	private String tokenId;
 	
 	@Column(nullable = false, columnDefinition = "TEXT")
 	private String tokenValue;

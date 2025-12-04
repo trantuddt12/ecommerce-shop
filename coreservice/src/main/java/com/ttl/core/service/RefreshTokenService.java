@@ -34,11 +34,11 @@ public class RefreshTokenService {
 		String lvIPAddress = pHttpReq.getRemoteAddr();
 
 		String lvRefreshTokenValue = mvTokenService.generateRefreshToken(pUser);
-		String lvTokenId =  mvSerialService.getNextSerial(ITag.TOKENID);
+//		String lvTokenId =  mvSerialService.getNextSerial(ITag.TOKENID);
 
 		RefreshToken lvRefreshToken =  RefreshToken.builder()
 				.userId(pUser.getId())
-				.tokenId(lvTokenId)
+//				.tokenId(lvTokenId)
 				.tokenValue(lvRefreshTokenValue)
 				.deviceId(UUID.randomUUID().toString())
 				.ipAddress(lvIPAddress)
