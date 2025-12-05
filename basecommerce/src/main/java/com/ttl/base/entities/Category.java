@@ -5,11 +5,10 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldNameConstants;
 import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.annotations.LazyGroup;
 import org.hibernate.type.SqlTypes;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Table(name = "categories",
@@ -46,7 +45,20 @@ public class Category extends AbstractEntity {
                cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Category> categories = new HashSet<>();
     
+//    @Builder.Default
+//    @OneToMany(mappedBy = CategoryAttribute.Fields.CATEGORY, fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<CategoryAttribute> attributes = new ArrayList<>();
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "categories_2_attributes",
+            joinColumns = @JoinColumn(name = "category_id"),
+            inverseJoinColumns = @JoinColumn(name = "attribute_id"))
+    @LazyGroup(Fields.ATTRIBUTES)
+    private Set<Attribute> attributes = new HashSet<>();
+
+    @OneToMany(fetch = FetchType.LAZY)
     @Builder.Default
-    @OneToMany(mappedBy = CategoryAttribute.Fields.CATEGORY, fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<CategoryAttribute> attributes = new ArrayList<>();
+    @JoinColumn(name = "category_id")
+    private Set<Image> galleryImages = new HashSet<>();
+
 }

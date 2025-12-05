@@ -3,14 +3,20 @@ package com.ttl.base.entities;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ttl.common.dto.ProductStatus;
+import com.ttl.common.dto.ProductType;
 import com.ttl.core.entities.AbstractEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldNameConstants;
 import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.annotations.LazyGroup;
 import org.hibernate.type.SqlTypes;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Table(name = "products")
 @Entity
@@ -47,23 +53,30 @@ public class Product extends AbstractEntity {
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false, length = 20)
 	private ProductStatus status;
-	
-//    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<Images> images;
 
-//    @Builder.Default
-//    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<ProductAttribute> attributes = new ArrayList<>();
+    @Enumerated(EnumType.STRING)
+    private ProductType type = ProductType.SIMPLE;
 
-//    @Builder.Default
-//    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<ProductVariant> variants = new ArrayList<>();
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Product baseProduct;
 
- // tiện ích: thêm attribute vào product, đã có categoryAttribute rồi,, thì k cần class này
-//    public void addAttribute(AttributeDef attributeDef, String value) {
-//        ProductAttribute pa = new ProductAttribute(this, attributeDef, value);
-//        this.attributes.add(pa);
-//    }
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "products_2_attributes",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "attribute_id"))
+    @LazyGroup(Fields.ATTRIBUTES)
+    private Set<Attribute> attributes = new HashSet<>();
+
+    //with TYPE = PRODUCT.VARIANT not include field variants
+    @OneToMany(mappedBy = Fields.BASE_PRODUCT, fetch = FetchType.LAZY)
+    @LazyGroup(Fields.VARIANTS)
+    private List<Product> variants = new ArrayList<>();
+
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id")
+    @Builder.Default
+    @LazyGroup(Fields.GALLERY_IMAGES)
+    private Set<Image> galleryImages = new HashSet<>();
     
     @Override
     public String toString() {

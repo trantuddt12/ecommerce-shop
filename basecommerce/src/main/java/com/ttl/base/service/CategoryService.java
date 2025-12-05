@@ -1,17 +1,6 @@
 package com.ttl.base.service;
 
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-
-import com.ttl.core.entities.AbstractEntity;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.ttl.base.entities.AttributeDef;
 import com.ttl.base.entities.Category;
 import com.ttl.base.entities.CategoryAttribute;
@@ -23,7 +12,11 @@ import com.ttl.common.constant.ITagCode;
 import com.ttl.common.dto.CategoryAttributeDTO;
 import com.ttl.common.dto.CategoryDTO;
 import com.ttl.common.exception.BussinessException;
-import com.ttl.common.utilities.CoreUtils;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Objects;
 
 @Service
 public class CategoryService {
@@ -50,20 +43,20 @@ public class CategoryService {
                     .orElseThrow(() -> new BussinessException(String.format("Category with parent id : %d not found!", req.getParentId()) , ITagCode.DATA_NOT_FOUND, getClass()));
             category.setParent(parent);
         }
-        List<CategoryAttribute> lvCategoryAttributes = new ArrayList<CategoryAttribute>();
-        List<CategoryAttributeDTO> lvAttributeDTOs =  req.getAttributes();
-//        for(CategoryAttributeDTO dto : lvAttributeDTOs) {
-//        	AttributeDef lvAttributeDef = mvAttributeDefRepository.findById(dto.getAttributeDefId())
-//    				.orElseThrow(() -> new BussinessException(String.format("AttributeDef with id : %s not found!", dto.getAttributeDefId()), ITagCode.DATA_NOT_FOUND, getClass()));
-//        	CategoryAttribute lvCategoryAttribute = mvMapper.dtoToCategoryAttribute(dto);
-//        	lvCategoryAttribute.setAttributeDef(lvAttributeDef);
-//        	lvCategoryAttribute.setCategory(category);
-//        	lvCategoryAttributes.add(lvCategoryAttribute);
+//        List<CategoryAttribute> lvCategoryAttributes = new ArrayList<CategoryAttribute>();
+//        List<CategoryAttributeDTO> lvAttributeDTOs =  req.getAttributes();
+////        for(CategoryAttributeDTO dto : lvAttributeDTOs) {
+////        	AttributeDef lvAttributeDef = mvAttributeDefRepository.findById(dto.getAttributeDefId())
+////    				.orElseThrow(() -> new BussinessException(String.format("AttributeDef with id : %s not found!", dto.getAttributeDefId()), ITagCode.DATA_NOT_FOUND, getClass()));
+////        	CategoryAttribute lvCategoryAttribute = mvMapper.dtoToCategoryAttribute(dto);
+////        	lvCategoryAttribute.setAttributeDef(lvAttributeDef);
+////        	lvCategoryAttribute.setCategory(category);
+////        	lvCategoryAttributes.add(lvCategoryAttribute);
+////        }
+//        category.setAttributes(lvCategoryAttributes);
+//        if(CoreUtils.isNullStr(category.getSlug())) {
+//        	category.setSlug(CoreUtils.generateSlug(category.getName()));
 //        }
-        category.setAttributes(lvCategoryAttributes);
-        if(CoreUtils.isNullStr(category.getSlug())) {
-        	category.setSlug(CoreUtils.generateSlug(category.getName()));
-        }
         Category saved = mvCategoryRepository.save(category);
         return mvMapper.toDto(saved);
     }
@@ -76,9 +69,9 @@ public class CategoryService {
         			() -> new BussinessException(String.format("Category with parent id : %d not found!", pCategoryReq.getParentId()) , ITagCode.DATA_NOT_FOUND, getClass()));
     	}
     	
-    	Map<Long, CategoryAttribute> lvExistsCategoryAttribute = lvCategory.getAttributes().stream()
-//    			.filter(attr -> AbstractEntity::getId != null)
-    			.collect(Collectors.toMap(AbstractEntity::getId, Function.identity()));
+//    	Map<Long, CategoryAttribute> lvExistsCategoryAttribute = lvCategory.getAttributes().stream()
+////    			.filter(attr -> AbstractEntity::getId != null)
+//    			.collect(Collectors.toMap(AbstractEntity::getId, Function.identity()));
     	
     	mvMapper.updateByDto(pCategoryReq, lvCategory);
     	lvCategory.getAttributes().clear();
@@ -95,7 +88,7 @@ public class CategoryService {
 //        		lvCategoryAttribute.setAttributeDef(lvAttributeDef);
 //            	lvCategoryAttribute.setCategory(lvCategory);
 //        	}
-        	lvCategory.getAttributes().add(lvCategoryAttribute);
+//        	lvCategory.getAttributes().add(lvCategoryAttribute);
         }
     	
 //    	lvCategory.setName(pCategoryReq.getName());
