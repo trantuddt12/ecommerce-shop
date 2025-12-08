@@ -138,48 +138,48 @@ public class Base64 {
 		}
 	}
 
-	public static void main2(String[] args) {
-		int numRuns = Integer.parseInt(args[0]);
-		int numBytes = Integer.parseInt(args[1]);
-		Random rnd = new Random();
-
-		for (int i = 0; i < numRuns; ++i) {
-			for (int j = 0; j < numBytes; ++j) {
-				byte[] arr = new byte[j];
-
-				for (int k = 0; k < j; ++k) {
-					arr[k] = (byte) rnd.nextInt();
-				}
-
-				String s = byteArrayToBase64(arr);
-				byte[] b = base64ToByteArray(s);
-				if (!Arrays.equals(arr, b)) {
-					System.out.println("Dismal failure!");
-				}
-
-				s = byteArrayToAltBase64(arr);
-				b = altBase64ToByteArray(s);
-				if (!Arrays.equals(arr, b)) {
-					System.out.println("Alternate dismal failure!");
-				}
-			}
-		}
-
-	}
-
-	public static void main(String[] pArgs) {
-		String lvAction = pArgs[0];
-		String lvPasswordToEncode;
-		String lvEncodedPassword;
-		if ("decode".equals(lvAction)) {
-			lvPasswordToEncode = pArgs[1];
-			lvEncodedPassword = new String(base64ToByteArray(lvPasswordToEncode));
-			System.out.println("Decoded Password: " + lvEncodedPassword);
-		} else if ("encode".equals(lvAction)) {
-			lvPasswordToEncode = pArgs[1];
-			lvEncodedPassword = byteArrayToBase64(lvPasswordToEncode.getBytes());
-			System.out.println("Encoded Password: " + lvEncodedPassword);
-		}
-
-	}
+//	public static void main2(String[] args) {
+//		int numRuns = Integer.parseInt(args[0]);
+//		int numBytes = Integer.parseInt(args[1]);
+//		Random rnd = new Random();
+//
+//		for (int i = 0; i < numRuns; ++i) {
+//			for (int j = 0; j < numBytes; ++j) {
+//				byte[] arr = new byte[j];
+//
+//				for (int k = 0; k < j; ++k) {
+//					arr[k] = (byte) rnd.nextInt();
+//				}
+//
+//				String s = byteArrayToBase64(arr);
+//				byte[] b = base64ToByteArray(s);
+//				if (!Arrays.equals(arr, b)) {
+//					System.out.println("Dismal failure!");
+//				}
+//
+//				s = byteArrayToAltBase64(arr);
+//				b = altBase64ToByteArray(s);
+//				if (!Arrays.equals(arr, b)) {
+//					System.out.println("Alternate dismal failure!");
+//				}
+//			}
+//		}
+//
+//	}
+//
+//	public static void main(String[] pArgs) {
+//		String lvAction = pArgs[0];
+//		String lvPasswordToEncode;
+//		String lvEncodedPassword;
+//		if ("decode".equals(lvAction)) {
+//			lvPasswordToEncode = pArgs[1];
+//			lvEncodedPassword = new String(base64ToByteArray(lvPasswordToEncode));
+//			System.out.println("Decoded Password: " + lvEncodedPassword);
+//		} else if ("encode".equals(lvAction)) {
+//			lvPasswordToEncode = pArgs[1];
+//			lvEncodedPassword = byteArrayToBase64(lvPasswordToEncode.getBytes());
+//			System.out.println("Encoded Password: " + lvEncodedPassword);
+//		}
+//
+//	}
 }

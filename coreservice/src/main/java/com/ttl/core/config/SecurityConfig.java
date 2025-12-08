@@ -43,6 +43,7 @@ public class SecurityConfig {
             			, "/swagger-ui/**"
             			, "/role/**"
             			, "/user/**"
+            			, "/error"
             			).permitAll()
                 .anyRequest().authenticated() // hoặc authenticated() nếu muốn bảo vệ API còn lại
             )

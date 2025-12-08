@@ -39,7 +39,7 @@ public class BrandService {
 	
 	public BrandDTO update(BrandDTO pRequest) throws BussinessException {
 		Brand lvBrand = mvBrandRepository.findById(pRequest.getId()).orElseThrow(
-				() -> new BussinessException(String.format("Brand with id : %d is not present", pRequest.getId()), ITagCode.DATA_NOT_FOUND, getClass()));
+				() -> new BussinessException(String.format("Brand with id : %d", pRequest.getId()), ITagCode.DATA_NOT_FOUND, getClass()));
 //không update slug
 //		if(mvBrandRepository.existsBySlugAndIdNot(pRequest.getSlug(), pRequest.getId())) {
 //			throw new BussinessException(String.format("Brand with slug : %d is present", pRequest.getSlug()), ITagCode.DATA_ALREADY_EXISTS, getClass());

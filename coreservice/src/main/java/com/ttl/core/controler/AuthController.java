@@ -31,6 +31,7 @@ import com.ttl.core.service.OtpRedisService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/auth")
@@ -52,7 +53,7 @@ public class AuthController {
 		mvOtpRedisService = pOtpRedisService;
 	}
 	@PostMapping("/login")
-	public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest pLoginRequest, HttpServletRequest pHttpRequest) throws BussinessException, InterruptedException, ExecutionException{
+	public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest pLoginRequest, HttpServletRequest pHttpRequest) throws BussinessException, InterruptedException, ExecutionException{
 		LoginResponse lvLoginResponse = mvAuthService.login(pLoginRequest, pHttpRequest).get();
 		ResponseCookie lvResponseCookie = ResponseCookie.from(ITag.REFRESH_TOKEN, lvLoginResponse.getRefreshToken())
 				.httpOnly(true)

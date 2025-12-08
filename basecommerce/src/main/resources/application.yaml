@@ -44,6 +44,8 @@ spring:
       group-id: my-default-group
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+  messages:
+    basename: messages
 
 logging:
   level:
