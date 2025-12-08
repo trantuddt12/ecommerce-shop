@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "screfresh_token")
+@Table(name = "refresh_token")
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor

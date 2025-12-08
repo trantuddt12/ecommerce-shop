@@ -14,8 +14,8 @@ public interface GenerateSerialRepository extends JpaRepository<GenerateSerial, 
 
     @Modifying
     @Transactional
-	@Query("UPDATE scserial s SET lastserial = ( CASE WHEN endwith IS NOT NULL THEN CASE WHEN lastserial + 1 > endwith THEN COALESCE(startwith, 0) ELSE lastserial + 1 END ELSE COALESCE(startwith, COALESCE(lastserial + 1, 0)) END ) WHERE serialno = :pSerialNo")
+	@Query("UPDATE serial s SET lastserial = ( CASE WHEN endwith IS NOT NULL THEN CASE WHEN lastserial + 1 > endwith THEN COALESCE(startwith, 0) ELSE lastserial + 1 END ELSE COALESCE(startwith, COALESCE(lastserial + 1, 0)) END ) WHERE serialno = :pSerialNo")
 	void updateLastSerial(@Param("pSerialNo") String pSerialNo);
-	@Query("select lastserial from scserial WHERE serialno = :pSerialNo")
+	@Query("select lastserial from serial WHERE serialno = :pSerialNo")
 	String getNextSerial(@Param("pSerialNo") String pSerialNo);
 }

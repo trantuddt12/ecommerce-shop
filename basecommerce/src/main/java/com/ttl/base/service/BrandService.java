@@ -53,7 +53,7 @@ public class BrandService {
 	
 	public BrandDTO findById(Long pId) throws BussinessException {
 		Brand lvBrand = mvBrandRepository.findById(pId).orElseThrow(
-				() -> new BussinessException(String.format("Brand with id : %d is not present", pId), ITagCode.DATA_ALREADY_EXISTS, getClass()));
+				() -> new BussinessException(String.format("Brand with id : %d", pId), ITagCode.DATA_NOT_FOUND, getClass()));
 		
 		return mvMapper.toDto(lvBrand);
 	}

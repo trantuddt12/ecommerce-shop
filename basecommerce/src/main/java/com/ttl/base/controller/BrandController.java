@@ -36,7 +36,7 @@ public class BrandController {
 	@PostMapping()
 	@Operation(summary = "Create Brand")
 	@PreAuthorize("hasAuthority('PRODUCT_VIEW')")
-	public BrandDTO create(@RequestBody BrandCreateRequest pReq) throws BussinessException{
+	public BrandDTO create(@Valid @RequestBody BrandCreateRequest pReq) throws BussinessException{
 		return mvBrandService.create(pReq);
 	}
 	@GetMapping
@@ -54,11 +54,11 @@ public class BrandController {
 	}
 	@GetMapping("/{pId}")
 	@Operation(summary = "Get Brand By Brand Id")
-	public BrandDTO getById(@RequestParam Long pId) throws BussinessException{
+	public BrandDTO getById(@PathVariable Long pId) throws BussinessException{
 		return mvBrandService.findById(pId);
 	}
 	@DeleteMapping()
-	public void delete(@RequestParam Long pId) throws BussinessException{
+	public void delete(@PathVariable Long pId) throws BussinessException{
 		mvBrandService.deleteById(pId);
 	}
 }

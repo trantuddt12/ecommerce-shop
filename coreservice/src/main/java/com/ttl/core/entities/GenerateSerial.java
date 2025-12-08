@@ -8,8 +8,8 @@ import lombok.Data;
 
 import java.math.BigDecimal;
 
-@Entity(name = "scserial")
-@Table(name = "scserial")
+@Entity(name = "serial")
+@Table(name = "serial")
 @Data
 public class GenerateSerial {
 

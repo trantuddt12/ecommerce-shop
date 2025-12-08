@@ -3,6 +3,7 @@ package com.ttl.core.aspect;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
+import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.springframework.stereotype.Component;
@@ -30,9 +31,20 @@ public class ServiceLoggingAspect {
         String methodName = joinPoint.getSignature().getName();
 
         if (result != null) {
-            log.info("Service {}.{} error {}", className, methodName, result);
+            log.info("Service {}.{} return: {}", className, methodName, result);
         } else {
-            log.info("Service {}.{} exec success", className, methodName);
+            log.info("Service {}.{} return void", className, methodName);
         }
+    }
+
+    @AfterThrowing(
+            pointcut = "execution(* com.ttl..service..*(..))",
+            throwing = "ex"
+    )
+    public void logAfterThrowing(JoinPoint joinPoint, Throwable ex) {
+        String className = joinPoint.getTarget().getClass().getSimpleName();
+        String methodName = joinPoint.getSignature().getName();
+
+        log.error("Service {}.{} throw exception", className, methodName, ex);
     }
 }
