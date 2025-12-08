@@ -5,8 +5,8 @@ import jakarta.validation.constraints.Size;
 
 public record BrandUpdateRequest (
 		
-		@NotBlank
-		@Size(max = 50)
+//		@NotBlank(message = "E123")
+		@Size(max = 50, message = "E124")
 		String name,
 		
 		@Size(max = 255)

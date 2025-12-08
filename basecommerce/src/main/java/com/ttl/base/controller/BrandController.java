@@ -20,6 +20,7 @@ import com.ttl.common.request.BrandCreateRequest;
 import com.ttl.common.request.BrandUpdateRequest;
 
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/brands")
@@ -48,7 +49,7 @@ public class BrandController {
 	@Operation(summary = "Update Brand")
 	@PreAuthorize("hasAuthority('PRODUCT_VIEW')")
 	public BrandDTO update(@PathVariable Long id, 
-						   @RequestBody BrandUpdateRequest pReq) throws BussinessException{
+						   @Valid @RequestBody BrandUpdateRequest pReq) throws BussinessException{
 		return mvBrandService.update(id, pReq);
 	}
 	@GetMapping("/{pId}")

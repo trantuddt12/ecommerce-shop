@@ -63,8 +63,8 @@ public class GlobalExceptionHandler {
         ex.getBindingResult().getFieldErrors().forEach(error -> {
 
             String message = mvErrorLoader.getMessage(
-                    error.getDefaultMessage(),
-                    LocaleContextHolder.getLocale()
+                    error.getDefaultMessage()
+                    ,error.getArguments()
             );
 
             fieldErrors.put(error.getField(), message);
