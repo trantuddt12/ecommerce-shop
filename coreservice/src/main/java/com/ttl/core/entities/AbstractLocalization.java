@@ -6,11 +6,15 @@ import lombok.Setter;
 import lombok.experimental.FieldNameConstants;
 import org.hibernate.annotations.LazyGroup;
 
+import java.util.Locale;
+
 @MappedSuperclass
 @Getter
 @Setter
 @FieldNameConstants
 public abstract class AbstractLocalization<T extends AbstractEntity> {
+
+    public static final Locale defaultLocale = new Locale("vn");
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

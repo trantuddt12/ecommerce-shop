@@ -95,10 +95,10 @@ public class ProductService {
     	    	}
     		}
     	}
-    	//valid product if exist
-    	if(mvProductRepository.existsByName(pRequest.getName())) {
-    		throw new BussinessException("Product with name : %s is existed!", ITagCode.DATA_ALREADY_EXISTS, getClass());
-    	}
+//    	//valid product if exist
+//    	if(mvProductRepository.existsByName(pRequest.getName())) {
+//    		throw new BussinessException("Product with name : %s is existed!", ITagCode.DATA_ALREADY_EXISTS, getClass());
+//    	}
     	
     	// save product with images
     	Product lvProduct = mvMapper.dtoToEntity(pRequest);

@@ -8,51 +8,46 @@ import com.ttl.core.entities.AbstractEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldNameConstants;
-import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.LazyGroup;
-import org.hibernate.type.SqlTypes;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+
+import static com.ttl.core.entities.AbstractLocalization.defaultLocale;
 
 @Table(name = "products")
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder(toBuilder = true)
-@Getter @Setter
+@Getter
+@Setter
 @EqualsAndHashCode(callSuper = false)
 @FieldNameConstants
 public class Product extends AbstractEntity {
 
-	@Column(nullable = false, length = 255)
-	private String name;
+    @OneToMany(mappedBy = "object", cascade = CascadeType.ALL, orphanRemoval = true)
+    @MapKey(name = "language") // Key của Map sẽ là mã ngôn ngữ (vd: "vi", "en")
+    private Map<String, ProductL10N> localizations = new HashMap<>();
 
     @Column
     private String code;
-	
-	@Column
-    @JdbcTypeCode(SqlTypes.LONGVARCHAR)
-	private String description;
-	
-	@Column(nullable = false, precision = 16, scale = 2)
-	private BigDecimal price;
-	
-	@Column(name = Fields.SELLER_ID, nullable = false)
-	private Long sellerId;
-	
-	@Column(name = Fields.CATEGORY_ID, nullable= false )
-	private Long categoryId;
-	
-	@Column(name = Fields.BRAND_ID, nullable = false)
-	private Long brandId;
-	
-	@Enumerated(EnumType.STRING)
-	@Column(nullable = false, length = 20)
-	private ProductStatus status;
+
+    @Column(nullable = false, precision = 16, scale = 2)
+    private BigDecimal price;
+
+    @Column(name = Fields.SELLER_ID, nullable = false)
+    private Long sellerId;
+
+    @Column(name = Fields.CATEGORY_ID, nullable = false)
+    private Long categoryId;
+
+    @Column(name = Fields.BRAND_ID, nullable = false)
+    private Long brandId;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 20)
+    private ProductStatus status;
 
     @Enumerated(EnumType.STRING)
     private ProductType type = ProductType.SIMPLE;
@@ -77,14 +72,42 @@ public class Product extends AbstractEntity {
     @Builder.Default
     @LazyGroup(Fields.GALLERY_IMAGES)
     private Set<Image> galleryImages = new HashSet<>();
-    
+
+    private ProductL10N getCurrentLocalization() {
+        return localizations.get(defaultLocale.getLanguage()) != null ? localizations.get(defaultLocale.getLanguage()) : new ProductL10N();
+    }
+
+    public void setName(String name) {
+        ProductL10N localization = getCurrentLocalization();
+        localization.setName(name);
+        localization.setLanguage(localization.getLanguage());
+        localization.setObject(this);
+    }
+
+    public void setDescription(String description) {
+        ProductL10N localization = getCurrentLocalization();
+        localization.setDescription(description);
+        localization.setLanguage(localization.getLanguage());
+        localization.setObject(this);
+    }
+
+    public String getName() {
+        ProductL10N localization = getCurrentLocalization();
+        return localization != null ? localization.getName() : "";
+    }
+
+    public String getDescription() {
+        ProductL10N localization = getCurrentLocalization();
+        return localization != null ? localization.getDescription() : "";
+    }
+
     @Override
     public String toString() {
-		try {
-			ObjectMapper mapper = new ObjectMapper();
-			return mapper.writeValueAsString(this);
-		} catch (JsonProcessingException e) {
-			return null;
-		}
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            return mapper.writeValueAsString(this);
+        } catch (JsonProcessingException e) {
+            return null;
+        }
     }
 }

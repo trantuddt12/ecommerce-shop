@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ProductRepository extends BaseRepository<Product> {
 
-	boolean existsByName(@NotNull String name);
+//	boolean existsByName(@NotNull String name);
 
 }
