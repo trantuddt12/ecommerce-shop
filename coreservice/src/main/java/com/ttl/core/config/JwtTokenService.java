@@ -66,19 +66,19 @@ public class JwtTokenService implements IJwtTokenService{
     		
             return true;
         } catch (ExpiredJwtException ex) {
-//            System.out.println("❌ Token hết hạn");
+            System.out.println("❌ Token hết hạn");
             return false;
         } catch (UnsupportedJwtException ex) {
-//            System.out.println("❌ Token không được hỗ trợ");
+            System.out.println("❌ Token không được hỗ trợ");
             return false;
         } catch (MalformedJwtException ex) {
-//            System.out.println("❌ Token sai định dạng");
+            System.out.println("❌ Token sai định dạng");
             return false;
         } catch (JwtException ex) {
-//            System.out.println("ex");
+            System.out.println("ex");
             return false;
         } catch (IllegalArgumentException ex) {
-//            System.out.println("❌ Token rỗng hoặc null");
+            System.out.println("❌ Token rỗng hoặc null");
             return false;
         }
     }

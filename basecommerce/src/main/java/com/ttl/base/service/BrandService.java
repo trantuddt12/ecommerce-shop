@@ -10,6 +10,8 @@ import com.ttl.base.repositories.BrandRepository;
 import com.ttl.common.constant.ITagCode;
 import com.ttl.common.dto.BrandDTO;
 import com.ttl.common.exception.BussinessException;
+import com.ttl.common.request.BrandCreateRequest;
+import com.ttl.common.request.BrandUpdateRequest;
 
 
 @Service
@@ -25,27 +27,25 @@ public class BrandService {
 		mvMapper = pMapper;
 	}
 
-	public BrandDTO create(BrandDTO pRequest) throws BussinessException {
+	public BrandDTO create(BrandCreateRequest pRequest) throws BussinessException {
 		
-		if(mvBrandRepository.existsByName(pRequest.getSlug())) {
-			throw new BussinessException(String.format("Brand with slug : %d is present", pRequest.getSlug()), ITagCode.DATA_ALREADY_EXISTS, getClass());
+		if(mvBrandRepository.existsByName(pRequest.slug())) {
+			throw new BussinessException(String.format("Brand with slug : %s", pRequest.slug()), ITagCode.DATA_ALREADY_EXISTS, getClass());
 		}
 		Brand lvBrand = mvMapper.createEntityFrom(pRequest);
-//        Brand lvBrand = null;
 		Brand rvBrand = mvBrandRepository.save(lvBrand);
-		 
 		return mvMapper.toDto(rvBrand);
 	}
 	
-	public BrandDTO update(BrandDTO pRequest) throws BussinessException {
-		Brand lvBrand = mvBrandRepository.findById(pRequest.getId()).orElseThrow(
-				() -> new BussinessException(String.format("Brand with id : %d", pRequest.getId()), ITagCode.DATA_NOT_FOUND, getClass()));
+	public BrandDTO update(Long id, BrandUpdateRequest pRequest) throws BussinessException {
+		Brand lvBrand = mvBrandRepository.findById(id).orElseThrow(
+				() -> new BussinessException(String.format("Brand with id : %d", id), ITagCode.DATA_NOT_FOUND, getClass()));
 //không update slug
 //		if(mvBrandRepository.existsBySlugAndIdNot(pRequest.getSlug(), pRequest.getId())) {
 //			throw new BussinessException(String.format("Brand with slug : %d is present", pRequest.getSlug()), ITagCode.DATA_ALREADY_EXISTS, getClass());
 //		}
 		
-//		mvMapper.updateEntityFromDto(pRequest, lvBrand);
+		mvMapper.updateEntityFromDto(pRequest, lvBrand);
 		Brand rvBrand = mvBrandRepository.save(lvBrand);
 		
 		return mvMapper.toDto(rvBrand);
