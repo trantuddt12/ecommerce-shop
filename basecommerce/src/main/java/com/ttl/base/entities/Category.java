@@ -4,12 +4,14 @@ import com.ttl.core.entities.AbstractEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldNameConstants;
-import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.LazyGroup;
-import org.hibernate.type.SqlTypes;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
+
+import static com.ttl.core.entities.AbstractLocalization.defaultLocale;
 
 @Table(name = "categories",
 	uniqueConstraints = {
@@ -26,12 +28,9 @@ public class Category extends AbstractEntity {
 
     public static final String UK_CATEGORY_SLUG = "uk_category_slug";
 
-    @Column(nullable = false, length = 100)
-    private String name;
-
-    @Column
-    @JdbcTypeCode(SqlTypes.LONGVARCHAR)
-    private String description;
+    @OneToMany(mappedBy = "object", cascade = CascadeType.ALL, orphanRemoval = true)
+    @MapKey(name = "language")
+    private Map<String, CategoryL10n> localizations = new HashMap<>();
     
     @Column(length=100 , nullable = false) 
     private String slug;
@@ -61,4 +60,32 @@ public class Category extends AbstractEntity {
     @JoinColumn(name = "category_id")
     private Set<Image> galleryImages = new HashSet<>();
 
+
+    private CategoryL10n getCurrentLocalization() {
+        return localizations.get(defaultLocale.getLanguage()) != null ? localizations.get(defaultLocale.getLanguage()) : new CategoryL10n();
+    }
+
+    public void setName(String name) {
+        CategoryL10n localization = getCurrentLocalization();
+        localization.setName(name);
+        localization.setLanguage(localization.getLanguage());
+        localization.setObject(this);
+    }
+
+    public void setDescription(String description) {
+        CategoryL10n localization = getCurrentLocalization();
+        localization.setDescription(description);
+        localization.setLanguage(localization.getLanguage());
+        localization.setObject(this);
+    }
+
+    public String getName() {
+        CategoryL10n localization = getCurrentLocalization();
+        return localization != null ? localization.getName() : "";
+    }
+
+    public String getDescription() {
+        CategoryL10n localization = getCurrentLocalization();
+        return localization != null ? localization.getDescription() : "";
+    }
 }
