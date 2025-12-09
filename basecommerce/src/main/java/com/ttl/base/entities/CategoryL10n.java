@@ -23,6 +23,10 @@ import org.hibernate.type.SqlTypes;
 )
 public class CategoryL10n extends AbstractLocalization<Category> {
 
+    public CategoryL10n (String language, Category category) {
+        super(language, category);
+    }
+
     @Column
     @JdbcTypeCode(SqlTypes.LONGVARCHAR)
     private String name;

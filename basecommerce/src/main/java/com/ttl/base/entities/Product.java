@@ -9,11 +9,12 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldNameConstants;
 import org.hibernate.annotations.LazyGroup;
+import org.springframework.context.i18n.LocaleContextHolder;
 
 import java.math.BigDecimal;
 import java.util.*;
 
-import static com.ttl.core.entities.AbstractLocalization.defaultLocale;
+import static com.ttl.core.config.I18nConfig.DEFAULT_LOCALE;
 
 @Table(name = "products")
 @Entity
@@ -74,31 +75,46 @@ public class Product extends AbstractEntity {
     private Set<Image> galleryImages = new HashSet<>();
 
     private ProductL10N getCurrentLocalization() {
-        return localizations.get(defaultLocale.getLanguage()) != null ? localizations.get(defaultLocale.getLanguage()) : new ProductL10N();
+        Locale requestLocale = LocaleContextHolder.getLocale();
+        String requestLanguage = requestLocale.getLanguage();
+        String defaultLanguage = DEFAULT_LOCALE.getLanguage();
+
+        if (Objects.isNull(localizations)) {
+            localizations = new HashMap<>();
+        }
+
+        ProductL10N localization = localizations.get(requestLanguage);
+
+        if (localization == null) {
+            localization = localizations.get(defaultLanguage);
+
+            if (localization == null) {
+                localization = new ProductL10N(requestLanguage, this);
+                localizations.put(requestLanguage, localization);
+            }
+        }
+
+        return localization;
     }
 
     public void setName(String name) {
         ProductL10N localization = getCurrentLocalization();
         localization.setName(name);
-        localization.setLanguage(localization.getLanguage());
-        localization.setObject(this);
     }
 
     public void setDescription(String description) {
         ProductL10N localization = getCurrentLocalization();
         localization.setDescription(description);
-        localization.setLanguage(localization.getLanguage());
-        localization.setObject(this);
     }
 
     public String getName() {
         ProductL10N localization = getCurrentLocalization();
-        return localization != null ? localization.getName() : "";
+        return localization.getName();
     }
 
     public String getDescription() {
         ProductL10N localization = getCurrentLocalization();
-        return localization != null ? localization.getDescription() : "";
+        return localization.getDescription();
     }
 
     @Override

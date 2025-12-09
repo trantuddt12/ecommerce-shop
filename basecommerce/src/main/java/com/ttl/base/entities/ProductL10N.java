@@ -12,18 +12,21 @@ import org.hibernate.type.SqlTypes;
 
 @Entity
 @Table(name = "product_l10n")
-@AllArgsConstructor
-@NoArgsConstructor
 @FieldNameConstants
 @AssociationOverride(
         name = "object",
         joinColumns = @JoinColumn(name = "product_id")
 )
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 public class ProductL10N extends AbstractLocalization<Product> {
 
-    //    public static final Locale defaultLocale = Locale.ENGLISH;
+    public ProductL10N(String language, Product product) {
+        super(language, product);
+    }
+
     @Column
     @JdbcTypeCode(SqlTypes.LONGVARCHAR)
     private String name;

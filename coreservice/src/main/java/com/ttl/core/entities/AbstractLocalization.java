@@ -1,20 +1,29 @@
 package com.ttl.core.entities;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.FieldNameConstants;
 import org.hibernate.annotations.LazyGroup;
-
-import java.util.Locale;
 
 @MappedSuperclass
 @Getter
 @Setter
 @FieldNameConstants
+@AllArgsConstructor
+@NoArgsConstructor
 public abstract class AbstractLocalization<T extends AbstractEntity> {
 
-    public static final Locale defaultLocale = new Locale("vn");
+    protected AbstractLocalization (String language) {
+        this.setLanguage(language);
+    }
+
+    protected AbstractLocalization (String language, T object) {
+        this.setLanguage(language);
+        this.setObject(object);
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

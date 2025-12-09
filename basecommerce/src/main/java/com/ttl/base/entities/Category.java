@@ -5,13 +5,11 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldNameConstants;
 import org.hibernate.annotations.LazyGroup;
+import org.springframework.context.i18n.LocaleContextHolder;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
-import static com.ttl.core.entities.AbstractLocalization.defaultLocale;
+import static com.ttl.core.config.I18nConfig.DEFAULT_LOCALE;
 
 @Table(name = "categories",
 	uniqueConstraints = {
@@ -42,6 +40,7 @@ public class Category extends AbstractEntity {
     @Builder.Default
     @OneToMany(mappedBy = Fields.PARENT, fetch = FetchType.LAZY,
                cascade = CascadeType.ALL, orphanRemoval = true)
+    @LazyGroup(Fields.CATEGORIES)
     private Set<Category> categories = new HashSet<>();
     
 //    @Builder.Default
@@ -58,34 +57,50 @@ public class Category extends AbstractEntity {
     @OneToMany(fetch = FetchType.LAZY)
     @Builder.Default
     @JoinColumn(name = "category_id")
+    @LazyGroup(Fields.GALLERY_IMAGES)
     private Set<Image> galleryImages = new HashSet<>();
 
 
     private CategoryL10n getCurrentLocalization() {
-        return localizations.get(defaultLocale.getLanguage()) != null ? localizations.get(defaultLocale.getLanguage()) : new CategoryL10n();
+        Locale requestLocale = LocaleContextHolder.getLocale();
+        String requestLanguage = requestLocale.getLanguage();
+        String defaultLanguage = DEFAULT_LOCALE.getLanguage();
+
+        if (Objects.isNull(localizations)) {
+            localizations = new HashMap<>();
+        }
+
+        CategoryL10n localization = localizations.get(requestLanguage);
+
+        if (localization == null) {
+            localization = localizations.get(defaultLanguage);
+
+            if (localization == null) {
+                localization = new CategoryL10n(requestLanguage, this);
+                localizations.put(requestLanguage, localization); // 🔥 Thêm vào map
+            }
+        }
+
+        return localization;
     }
 
     public void setName(String name) {
         CategoryL10n localization = getCurrentLocalization();
         localization.setName(name);
-        localization.setLanguage(localization.getLanguage());
-        localization.setObject(this);
     }
 
     public void setDescription(String description) {
         CategoryL10n localization = getCurrentLocalization();
         localization.setDescription(description);
-        localization.setLanguage(localization.getLanguage());
-        localization.setObject(this);
     }
 
     public String getName() {
         CategoryL10n localization = getCurrentLocalization();
-        return localization != null ? localization.getName() : "";
+        return localization.getName();
     }
 
     public String getDescription() {
         CategoryL10n localization = getCurrentLocalization();
-        return localization != null ? localization.getDescription() : "";
+        return localization.getDescription();
     }
 }

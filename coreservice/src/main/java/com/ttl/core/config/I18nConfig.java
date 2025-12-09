@@ -16,6 +16,8 @@ import jakarta.validation.Validator;
 @Configuration
 public class I18nConfig {
 
+    public static final Locale DEFAULT_LOCALE = Locale.forLanguageTag("vi");
+
     @Bean
     public MessageSource messageSource() {
         ReloadableResourceBundleMessageSource messageSource =
@@ -23,13 +25,13 @@ public class I18nConfig {
 
         messageSource.setBasename("classpath:messages");
         messageSource.setDefaultEncoding("UTF-8");
-        messageSource.setDefaultLocale(Locale.forLanguageTag("vi"));
+        messageSource.setDefaultLocale(DEFAULT_LOCALE);
         return messageSource;
     }
     @Bean
     public LocaleResolver localeResolver() {
         AcceptHeaderLocaleResolver resolver = new AcceptHeaderLocaleResolver();
-        resolver.setDefaultLocale(Locale.forLanguageTag("vi"));
+        resolver.setDefaultLocale(DEFAULT_LOCALE);
         return resolver;
     }
     

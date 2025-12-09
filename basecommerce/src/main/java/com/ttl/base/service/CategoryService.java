@@ -35,15 +35,19 @@ public class CategoryService {
 	}
 	public CategoryDTO create(CategoryDTO req) throws BussinessException {
 
-        Category category = null;
-//        Category category = mvMapper.createDtoToEntity(req);
+//        Category category = null;
+        Category category = mvMapper.createDtoToEntity(req);
 
         if (req.getParentId() != null && req.getParentId() != 0) {
             Category parent = mvCategoryRepository.findById(req.getParentId())
                     .orElseThrow(() -> new BussinessException(String.format("Category with parent id : %d not found!", req.getParentId()) , ITagCode.DATA_NOT_FOUND, getClass()));
             category.setParent(parent);
         }
-//        List<CategoryAttribute> lvCategoryAttributes = new ArrayList<CategoryAttribute>();
+
+        category.setName(req.getName());
+        category.setDescription(req.getDescription());
+        category.setSlug(req.getSlug());
+        //        List<CategoryAttribute> lvCategoryAttributes = new ArrayList<CategoryAttribute>();
 //        List<CategoryAttributeDTO> lvAttributeDTOs =  req.getAttributes();
 ////        for(CategoryAttributeDTO dto : lvAttributeDTOs) {
 ////        	AttributeDef lvAttributeDef = mvAttributeDefRepository.findById(dto.getAttributeDefId())
