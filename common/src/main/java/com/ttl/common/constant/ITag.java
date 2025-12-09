@@ -17,4 +17,8 @@ public interface ITag {
 	String LOGIN_BY_GOOGLE = "LOGIN_BY_GOOGLE";
 	String REGISTER_BY_EMAIL = "REGISTER_BY_EMAIL";
 	String Kafka_Verification_Email = "Kafka_Verification_Email";
+
+	String BRAND_TOPIC = "brand-changed";
+	String SEARCHSERVICE_GROUP = "searchservice-group";
+	
 }

@@ -124,7 +124,7 @@ public class AuthController {
 		mvEmailService.sendOtpEmail(pUser.getEmail(), lvOtp);
 		mvOtpRedisService.saveOtp(ITag.OTP_REGISTER, pUser.getEmail(), lvOtp);
 		mvOtpRedisService.saveTempRegister(pUser);
-		 return ResponseEntity.ok(pUser.getEmail());
+		return ResponseEntity.ok(pUser.getEmail());
 	}
 	@PostMapping("/verifyotp")
 	public ResponseEntity<?> verifyOtp(@RequestParam String pOtpType, @RequestParam String pEmail, @RequestParam String pOtp){
