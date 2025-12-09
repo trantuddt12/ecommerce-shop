@@ -34,13 +34,13 @@ public class CategoryController {
 		return mvCategoryService.update(pCategoryReq);
 	}
 	
-	@DeleteMapping()
-	public void delete(@RequestParam Long pId) throws BussinessException{
+	@DeleteMapping("/{pID}")
+	public void delete(@PathVariable Long pId) throws BussinessException{
 		mvCategoryService.delete(null);
 	}
 	
-	@GetMapping("/id")
-	public CategoryDTO findByID(@RequestParam Long pID) throws BussinessException{
+	@GetMapping("/{pID}")
+	public CategoryDTO findByID(@PathVariable Long pID) throws BussinessException{
 		return mvCategoryService.getById(pID);
 	}
 }

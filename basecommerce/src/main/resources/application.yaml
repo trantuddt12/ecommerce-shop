@@ -69,6 +69,6 @@ error:
 
 jwt:
   secret : MySecretKeyForJWTSignatures123456
-  expirationMs : 3000
+  expirationMs : 3600000
   refreshExpirationMs : 2592000000
   
