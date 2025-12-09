@@ -6,13 +6,16 @@ import java.util.Date;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import com.ttl.common.constant.ITagCode;
 import com.ttl.core.entities.User;
+import com.ttl.core.handler.JwtAuthenticationException;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.SignatureException;
 import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.security.Keys;
 
@@ -65,21 +68,18 @@ public class JwtTokenService implements IJwtTokenService{
 	            .parseClaimsJws(token);
     		
             return true;
-        } catch (ExpiredJwtException ex) {
-            System.out.println("❌ Token hết hạn");
-            return false;
+    	} catch (ExpiredJwtException ex) {
+            throw new JwtAuthenticationException(ITagCode.TOKEN_EXPIRED, ex); // Token expired
         } catch (UnsupportedJwtException ex) {
-            System.out.println("❌ Token không được hỗ trợ");
-            return false;
+            throw new JwtAuthenticationException(ITagCode.TOKEN_UNSUPPORTED, ex); // Unsupported token
         } catch (MalformedJwtException ex) {
-            System.out.println("❌ Token sai định dạng");
-            return false;
-        } catch (JwtException ex) {
-            System.out.println("ex");
-            return false;
+            throw new JwtAuthenticationException(ITagCode.TOKEN_MALFORMED, ex); // Malformed token
+        } catch (SecurityException | SignatureException ex) {
+            throw new JwtAuthenticationException(ITagCode.TOKEN_SIGNATURE_INVALID, ex); // Signature invalid
         } catch (IllegalArgumentException ex) {
-            System.out.println("❌ Token rỗng hoặc null");
-            return false;
+            throw new JwtAuthenticationException(ITagCode.TOKEN_EMPTY, ex); // Token empty / invalid arg
+        } catch (JwtException ex) {
+            throw new JwtAuthenticationException(ITagCode.TOKEN_INVALID, ex); // Generic invalid token
         }
     }
     @Override

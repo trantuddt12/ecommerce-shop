@@ -46,4 +46,11 @@ public interface ITagCode {
     String LOGIN_REQUIRED = "E119";
     
     String ERROR_MAPPING = "E200";
+    
+    String TOKEN_EXPIRED = "E4011";
+    String TOKEN_INVALID = "E4012";
+    String TOKEN_MALFORMED = "E4013";
+    String TOKEN_UNSUPPORTED = "E4014";
+    String TOKEN_SIGNATURE_INVALID = "E4015";
+    String TOKEN_EMPTY = "E4016";
 }

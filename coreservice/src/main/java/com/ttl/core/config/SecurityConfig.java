@@ -25,9 +25,13 @@ public class SecurityConfig {
 
     private final CustomUserDetailsService userDetailsService;
     private final JwtAuthFilter mvJwtAuthFilter;
-    public SecurityConfig(CustomUserDetailsService userDetailsService, JwtAuthFilter pJwtAuthFilter) {
+    private final JwtAuthenticationEntryPoint entryPoint;
+    
+    public SecurityConfig(CustomUserDetailsService userDetailsService, JwtAuthFilter pJwtAuthFilter
+    		,JwtAuthenticationEntryPoint pEntryPoint) {
         this.userDetailsService = userDetailsService;
 		this.mvJwtAuthFilter = pJwtAuthFilter;
+		this.entryPoint = pEntryPoint;
     }
 
     @Bean
@@ -47,6 +51,7 @@ public class SecurityConfig {
             			).permitAll()
                 .anyRequest().authenticated() // hoặc authenticated() nếu muốn bảo vệ API còn lại
             )
+            .exceptionHandling(ex -> ex.authenticationEntryPoint(entryPoint))
             .addFilterBefore(mvJwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
 //            .formLogin()
 //            .and()
