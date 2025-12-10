@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.ttl.base.entities.Brand;
+import com.ttl.base.index.BrandIndexerClient;
 import com.ttl.base.mapper.BrandMapper;
 import com.ttl.base.repositories.BrandRepository;
 import com.ttl.common.constant.ITagCode;
@@ -19,12 +20,14 @@ public class BrandService {
 
 	private final BrandRepository mvBrandRepository;
 	private final BrandMapper mvMapper;
+	private final BrandIndexerClient mvBrandIndexerClient;
 	
-	
-	public BrandService(BrandRepository pBrandRepository, BrandMapper pMapper) {
+	public BrandService(BrandRepository pBrandRepository, BrandMapper pMapper
+			, BrandIndexerClient pBrandIndexerClient) {
 		super();
 		this.mvBrandRepository = pBrandRepository;
 		mvMapper = pMapper;
+		mvBrandIndexerClient = pBrandIndexerClient;
 	}
 
 	public BrandDTO create(BrandCreateRequest pRequest) throws BussinessException {
@@ -34,6 +37,9 @@ public class BrandService {
 		}
 		Brand lvBrand = mvMapper.createEntityFrom(pRequest);
 		Brand rvBrand = mvBrandRepository.save(lvBrand);
+		
+		//send
+		mvBrandIndexerClient.indexBrand(rvBrand);
 		return mvMapper.toDto(rvBrand);
 	}
 	
@@ -47,7 +53,8 @@ public class BrandService {
 		
 		mvMapper.updateEntityFromDto(pRequest, lvBrand);
 		Brand rvBrand = mvBrandRepository.save(lvBrand);
-		
+//		send
+		mvBrandIndexerClient.indexBrand(rvBrand);
 		return mvMapper.toDto(rvBrand);
 	}
 	

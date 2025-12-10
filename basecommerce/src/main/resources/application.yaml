@@ -72,3 +72,5 @@ jwt:
   expirationMs : 3600000
   refreshExpirationMs : 2592000000
   
+searchservice:
+  url: http://localhost:8082  
